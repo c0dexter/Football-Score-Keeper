@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#66BB6A</color>
+    <color name="colorPrimaryDark">#4CAF50</color>
+    <color name="colorAccent">#FF9800</color>
+    <color name="scoreColor">@android:color/black</color>
+    <color name="teamFontColor">#616161</color>
+    <color name="colorButton">#4CAF50</color>
+</resources>

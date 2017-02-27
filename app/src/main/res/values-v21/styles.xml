@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Primary theme color of the app (sets background color of app bar) -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- Background color of buttons in the app -->
+        <item name="colorButtonNormal">@color/colorButton</item>
+    </style>
+
+    <style name="TeamNameTextView" parent="AppTheme">
+        <!--  -->
+        <item name="android:textSize">@dimen/team_font_size</item>
+        <item name="android:textColor">@color/teamFontColor</item>
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+    </style>
+
+    <style name="ScoreTextView">
+        <item name="android:textSize">@dimen/score_font_size</item>
+        <item name="android:textColor">@color/scoreColor</item>
+        <item name="android:paddingBottom">@dimen/score_margin_bottom_vertical</item>
+    </style>
+
+    <style name="VerticalDivider">
+        <item name="android:background">@android:color/darker_gray</item>
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_width">@dimen/dividers_thickness</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="scoreButtons">
+        <item name="android:layout_marginLeft">@dimen/score_button_margin_horizontal</item>
+        <item name="android:layout_marginRight">@dimen/score_button_margin_horizontal</item>
+        <item name="android:layout_marginBottom">@dimen/score_button_margin_vertical</item>
+        <item name="android:layout_marginTop">@dimen/score_button_margin_vertical</item>
+    </style>
+
+</resources>
