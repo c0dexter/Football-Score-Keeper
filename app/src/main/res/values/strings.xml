@@ -1,9 +1,7 @@
 <resources>
-    <string name="app_name">Court Counter</string>
+    <string name="app_name">Football Score Keeper</string>
     <string name="first_team">Team A</string>
     <string name="second_team">Team B</string>
-    <string name="plus_three_points">+3 points</string>
-    <string name="plus_two_points">+2 points</string>
-    <string name="free_throw">GOOL</string>
+    <string name="goal_button">goal</string>
     <string name="reset_button">reset</string>
 </resources>

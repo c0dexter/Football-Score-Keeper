@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Primary theme color of the app (sets background color of app bar) -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <!-- Background color of buttons in the app -->
@@ -17,7 +17,10 @@
     <style name="ScoreTextView">
         <item name="android:textSize">@dimen/score_font_size</item>
         <item name="android:textColor">@color/scoreColor</item>
-        <item name="android:paddingBottom">@dimen/score_margin_bottom_vertical</item>
+    </style>
+
+    <style name="CardTextView">
+        <item name="android:textSize">@dimen/card_size</item>
     </style>
 
     <style name="VerticalDivider">
@@ -31,6 +34,7 @@
         <item name="android:layout_marginLeft">@dimen/score_button_margin_horizontal</item>
         <item name="android:layout_marginRight">@dimen/score_button_margin_horizontal</item>
         <item name="android:layout_marginBottom">@dimen/score_button_margin_vertical</item>
+        <item name="android:layout_marginTop">@dimen/score_margin_bottom_vertical</item>
     </style>
 
 </resources>
