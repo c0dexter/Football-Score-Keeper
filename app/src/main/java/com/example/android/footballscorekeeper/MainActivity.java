@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private int scoreTeamB = 0;
     private int amountOfYellowCardsTeamB = 0;
     private int amountOfRedCardsTeamB = 0;
+    private long stopwatch;
 
     //Team A
     private TextView teamAScoreTextView;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView teamBScoreTextView;
     private TextView teamBYellowCardTextView;
     private TextView teamBRedCardTextView;
+    //Stopwatch
+    private TextView stopwatchTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         // recovering the instance state
         if (savedInstanceState != null) {
+            // Team A
             scoreTeamA = savedInstanceState.getInt("TEAM_A_SCORE");
             amountOfYellowCardsTeamA = savedInstanceState.getInt("TEAM_A_YELLOW_CARD");
             amountOfRedCardsTeamA = savedInstanceState.getInt("TEAM_A_RED_CARD");
@@ -39,23 +43,35 @@ public class MainActivity extends AppCompatActivity {
             scoreTeamB = savedInstanceState.getInt("TEAM_B_SCORE");
             amountOfYellowCardsTeamB = savedInstanceState.getInt("TEAM_B_YELLOW_CARD");
             amountOfRedCardsTeamB = savedInstanceState.getInt("TEAM_B_RED_CARD");
+            // Stopwatch
+            stopwatch = savedInstanceState.getLong("STOPWATCH_TIMER");
         }
 
         setContentView(R.layout.activity_main);
 
         //Declaration TextViews so we can manipulate them later
+        // Team A
         teamAScoreTextView = (TextView) findViewById(R.id.team_a_score);
         teamAYellowCardTextView = (TextView) findViewById(R.id.team_a_yellow_card);
         teamARedCardTextView = (TextView) findViewById(R.id.team_a_red_card);
         // Team B
         teamBScoreTextView = (TextView) findViewById(R.id.team_b_score);
+        teamBYellowCardTextView = (TextView) findViewById(R.id.team_b_yellow_card);
+        teamBRedCardTextView = (TextView) findViewById(R.id.team_b_red_card);
         //TODO: Dodać pozostałe VIEWs do widoku
+        //teamBYellowCardView
+        //teamBRedCardView
+        //Stopwatch
+        stopwatchTextView = (TextView) findViewById(R.id.stopwatch);
         //Creating a new custom Typeface for Counter digits
         Typeface CounterCustomFont = Typeface.createFromAsset(getAssets(), "fonts/KARNIVOD.ttf");
         teamAScoreTextView.setTypeface(CounterCustomFont);
         teamAYellowCardTextView.setTypeface(CounterCustomFont);
         teamARedCardTextView.setTypeface(CounterCustomFont);
         teamBScoreTextView.setTypeface(CounterCustomFont);
+        teamBYellowCardTextView.setTypeface(CounterCustomFont);
+        teamBRedCardTextView.setTypeface(CounterCustomFont);
+        stopwatchTextView.setTypeface(CounterCustomFont);
         //teamBYellowCardTextView.setTypeface(CounterCustomFont);
         //teamBRedCardTextView.setTypeface(CounterCustomFont);
     }
@@ -69,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("TEAM_B_SCORE", scoreTeamB);
         outState.putInt("TEAM_B_YELLOW_CARD", amountOfYellowCardsTeamB);
         outState.putInt("TEAM_B_RED_CARD", amountOfRedCardsTeamB);
+
+        outState.putLong("STOPWATCH_TIMER", stopwatch);
         super.onSaveInstanceState(outState);
     }
 
@@ -80,8 +98,13 @@ public class MainActivity extends AppCompatActivity {
         teamARedCardTextView.setText(String.valueOf(savedInstanceState.getInt("TEAM_A_RED_CARD")));
         //Team B
         teamBScoreTextView.setText(String.valueOf(savedInstanceState.getInt("TEAM_B_SCORE")));
+        teamBYellowCardTextView.setText(String.valueOf(savedInstanceState.getInt("TEAM_B_YELLOW_CARD")));
+        teamBRedCardTextView.setText(String.valueOf(savedInstanceState.getInt("TEAM_B_RED_CARD")));
+        //Stopwatch
+        stopwatchTextView.setText(String.valueOf(savedInstanceState.getLong("STOPWATCH_TIMER")));
     }
 
+    //TEAM A
     /**
      * Displays the given score for Team A.
      *
@@ -100,6 +123,39 @@ public class MainActivity extends AppCompatActivity {
         displayForTeamA(scoreTeamA);
     }
 
+    /**
+     * @param amountYellowCard Displays the given amount of yellow cards for Team A.
+     */
+    public void displayYellowCardsForTeamA(int amountYellowCard) {
+        TextView scoreView = (TextView) findViewById(R.id.team_a_yellow_card);
+        scoreView.setText(String.valueOf(amountYellowCard));
+    }
+
+    /**
+     * Increase Team A's amount of yellow cards by 1
+     */
+    public void addOneYellowCardForTeamA(View v) {
+        amountOfYellowCardsTeamA = amountOfYellowCardsTeamA + 1;
+        displayYellowCardsForTeamA(amountOfYellowCardsTeamA);
+    }
+
+    /**
+     * @param amountOfRedCards Displays the given amount of red cards for Team A.
+     */
+    public void displayRedCardsForTeamA(int amountOfRedCards) {
+        TextView scoreView = (TextView) findViewById(R.id.team_a_red_card);
+        scoreView.setText(String.valueOf(amountOfRedCards));
+    }
+
+    /**
+     * Increase Team A's amount of yellow cards by 1
+     */
+    public void addOneRedCardForTeamA(View v) {
+        amountOfRedCardsTeamA = amountOfRedCardsTeamA + 1;
+        displayRedCardsForTeamA(amountOfRedCardsTeamA);
+    }
+
+    //TEAM B
 
     /**
      * Displays the given score for Team B.
@@ -120,6 +176,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * @param amountYellowCard
+     * Displays the given amount of yellow cards for Team B.
+     */
+    public void displayYellowCardsForTeamB(int amountYellowCard) {
+        TextView scoreView = (TextView) findViewById(R.id.team_b_yellow_card);
+        scoreView.setText(String.valueOf(amountYellowCard));
+    }
+
+    /**
+     * Increase Team B's amount of yellow cards by 1
+     */
+    public void addOneYellowCardForTeamB(View v) {
+        amountOfYellowCardsTeamB = amountOfYellowCardsTeamB + 1;
+        displayYellowCardsForTeamB(amountOfYellowCardsTeamB);
+    }
+
+    /**
+     * @param amountOfRedCards Displays the given amount of red cards for Team B.
+     */
+    public void displayRedCardsForTeamB(int amountOfRedCards) {
+        TextView scoreView = (TextView) findViewById(R.id.team_b_red_card);
+        scoreView.setText(String.valueOf(amountOfRedCards));
+    }
+
+    /**
+     * Increase Team B's amount of yellow cards by 1
+     */
+    public void addOneRedCardForTeamB(View v) {
+        amountOfRedCardsTeamB = amountOfRedCardsTeamB + 1;
+        displayRedCardsForTeamB(amountOfRedCardsTeamB);
+    }
+
+    /**
      * Reset the counters for the both teams back to 0
      */
     public void resetScoreCounters(View v) {
@@ -132,6 +221,21 @@ public class MainActivity extends AppCompatActivity {
 
         displayForTeamA(scoreTeamA);
         displayForTeamB(scoreTeamB);
+        displayYellowCardsForTeamA(amountOfYellowCardsTeamA);
+        displayRedCardsForTeamA(amountOfRedCardsTeamA);
+        displayYellowCardsForTeamB(amountOfYellowCardsTeamB);
+        displayRedCardsForTeamB(amountOfRedCardsTeamB);
+    }
+
+    /**
+     * Displays stopwatch.
+     *
+     *
+     */
+
+    public void displayStopwatchTime() { //TODO: przekazac do metoty argument
+        TextView stopwatchTextView = (TextView) findViewById((R.id.stopwatch));
+        stopwatchTextView.setText((int) stopwatch);
     }
 
 

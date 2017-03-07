@@ -14,12 +14,6 @@
         <item name="android:paddingBottom">@dimen/team_name_margin_vertical</item>
     </style>
 
-    <style name="ScoreTextView">
-        <item name="android:textSize">@dimen/score_font_size</item>
-        <item name="android:textColor">@color/scoreColor</item>
-
-    </style>
-
     <style name="VerticalDivider">
         <item name="android:background">@android:color/darker_gray</item>
         <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
