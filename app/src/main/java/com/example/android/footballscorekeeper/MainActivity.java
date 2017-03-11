@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements StopWatchInterface {
 
     private int scoreTeamA = 0;
     private int amountOfYellowCardsTeamA = 0;
@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private int scoreTeamB = 0;
     private int amountOfYellowCardsTeamB = 0;
     private int amountOfRedCardsTeamB = 0;
-    private long stopwatch;
+    private String stopwatchCurrentTime = "00:00:00";
 
     //Team A
     private TextView teamAScoreTextView;
@@ -28,12 +28,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView teamBRedCardTextView;
     //Stopwatch
     private TextView stopwatchTextView;
+    private boolean isRunning = false;
+    private TimeCalculator stopWatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // recovering the instance state
+        // *** RECOVERING THE INSTANCE STATE
         if (savedInstanceState != null) {
             // Team A
             scoreTeamA = savedInstanceState.getInt("TEAM_A_SCORE");
@@ -44,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
             amountOfYellowCardsTeamB = savedInstanceState.getInt("TEAM_B_YELLOW_CARD");
             amountOfRedCardsTeamB = savedInstanceState.getInt("TEAM_B_RED_CARD");
             // Stopwatch
-            stopwatch = savedInstanceState.getLong("STOPWATCH_TIMER");
+            stopwatchCurrentTime = savedInstanceState.getString("STOPWATCH_TIMER");
         }
 
         setContentView(R.layout.activity_main);
 
-        //Declaration TextViews so we can manipulate them later
+        // *** DECLARATION TEXTVIEWS SO WE CAN MANIPULATE THEM LATER
         // Team A
         teamAScoreTextView = (TextView) findViewById(R.id.team_a_score);
         teamAYellowCardTextView = (TextView) findViewById(R.id.team_a_yellow_card);
@@ -58,12 +60,10 @@ public class MainActivity extends AppCompatActivity {
         teamBScoreTextView = (TextView) findViewById(R.id.team_b_score);
         teamBYellowCardTextView = (TextView) findViewById(R.id.team_b_yellow_card);
         teamBRedCardTextView = (TextView) findViewById(R.id.team_b_red_card);
-        //TODO: Dodać pozostałe VIEWs do widoku
-        //teamBYellowCardView
-        //teamBRedCardView
         //Stopwatch
         stopwatchTextView = (TextView) findViewById(R.id.stopwatch);
-        //Creating a new custom Typeface for Counter digits
+
+        // *** Creating a new custom Typeface for Counter digits
         Typeface CounterCustomFont = Typeface.createFromAsset(getAssets(), "fonts/KARNIVOD.ttf");
         teamAScoreTextView.setTypeface(CounterCustomFont);
         teamAYellowCardTextView.setTypeface(CounterCustomFont);
@@ -72,39 +72,56 @@ public class MainActivity extends AppCompatActivity {
         teamBYellowCardTextView.setTypeface(CounterCustomFont);
         teamBRedCardTextView.setTypeface(CounterCustomFont);
         stopwatchTextView.setTypeface(CounterCustomFont);
-        //teamBYellowCardTextView.setTypeface(CounterCustomFont);
-        //teamBRedCardTextView.setTypeface(CounterCustomFont);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        // Team A
         outState.putInt("TEAM_A_SCORE", scoreTeamA);
         outState.putInt("TEAM_A_YELLOW_CARD", amountOfYellowCardsTeamA);
         outState.putInt("TEAM_A_RED_CARD", amountOfRedCardsTeamA);
 
+        // Team B
         outState.putInt("TEAM_B_SCORE", scoreTeamB);
         outState.putInt("TEAM_B_YELLOW_CARD", amountOfYellowCardsTeamB);
         outState.putInt("TEAM_B_RED_CARD", amountOfRedCardsTeamB);
 
-        outState.putLong("STOPWATCH_TIMER", stopwatch);
+        // Stopwatch
+        outState.putString("STOPWATCH_TIMER", stopwatchCurrentTime);
+
+        if (stopWatch != null) {
+            outState.putBoolean("STOPWATCH_STARTED", stopWatch.IsStarted());
+            outState.putLong("STOPWATCH_START_TIME", stopWatch.GetStartTime());
+            stopWatch.Stop();
+        } else {
+            outState.putBoolean("STOPWATCH_STARTED", false);
+        }
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        //Team A
+        // Team A
         teamAScoreTextView.setText(String.valueOf(savedInstanceState.getInt("TEAM_A_SCORE")));
         teamAYellowCardTextView.setText(String.valueOf(savedInstanceState.getInt("TEAM_A_YELLOW_CARD")));
         teamARedCardTextView.setText(String.valueOf(savedInstanceState.getInt("TEAM_A_RED_CARD")));
-        //Team B
+        // Team B
         teamBScoreTextView.setText(String.valueOf(savedInstanceState.getInt("TEAM_B_SCORE")));
         teamBYellowCardTextView.setText(String.valueOf(savedInstanceState.getInt("TEAM_B_YELLOW_CARD")));
         teamBRedCardTextView.setText(String.valueOf(savedInstanceState.getInt("TEAM_B_RED_CARD")));
-        //Stopwatch
-        stopwatchTextView.setText(String.valueOf(savedInstanceState.getLong("STOPWATCH_TIMER")));
+        // Stopwatch
+        stopwatchTextView.setText(String.valueOf(savedInstanceState.getString("STOPWATCH_TIMER")));
+        if (savedInstanceState.getBoolean("STOPWATCH_STARTED")) {
+            isRunning = true;
+            stopWatch = new TimeCalculator(this, savedInstanceState.getLong("STOPWATCH_START_TIME"));
+            stopWatch.execute();
+        }
+
     }
 
+    // *** LOGIC TO BUTTONS AND VIEWS
     //TEAM A
+
     /**
      * Displays the given score for Team A.
      *
@@ -116,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Increase points by 1
+     * Increase points by 1 for Team A
      */
     public void addOnePointsForTeamA(View v) {
         scoreTeamA = scoreTeamA + 1;
@@ -148,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Increase Team A's amount of yellow cards by 1
+     * Increase Team A's amount of red cards by 1
      */
     public void addOneRedCardForTeamA(View v) {
         amountOfRedCardsTeamA = amountOfRedCardsTeamA + 1;
@@ -168,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Increase points by 1
+     * Increase points by 1 for Team B
      */
     public void addOnePointsForTeamB(View v) {
         scoreTeamB = scoreTeamB + 1;
@@ -176,8 +193,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * @param amountYellowCard
-     * Displays the given amount of yellow cards for Team B.
+     * @param amountYellowCard Displays the given amount of yellow cards for Team B.
      */
     public void displayYellowCardsForTeamB(int amountYellowCard) {
         TextView scoreView = (TextView) findViewById(R.id.team_b_yellow_card);
@@ -201,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Increase Team B's amount of yellow cards by 1
+     * Increase Team B's amount of red cards by 1
      */
     public void addOneRedCardForTeamB(View v) {
         amountOfRedCardsTeamB = amountOfRedCardsTeamB + 1;
@@ -212,32 +228,56 @@ public class MainActivity extends AppCompatActivity {
      * Reset the counters for the both teams back to 0
      */
     public void resetScoreCounters(View v) {
+        if (stopWatch != null) stopWatch.Stop();
+
+        //Set all values to 0 by default
         scoreTeamA = 0;
         scoreTeamB = 0;
         amountOfYellowCardsTeamA = 0;
         amountOfRedCardsTeamA = 0;
         amountOfYellowCardsTeamB = 0;
         amountOfRedCardsTeamB = 0;
+        stopwatchCurrentTime = "00:00:00";
 
+        //Display default values
         displayForTeamA(scoreTeamA);
         displayForTeamB(scoreTeamB);
         displayYellowCardsForTeamA(amountOfYellowCardsTeamA);
         displayRedCardsForTeamA(amountOfRedCardsTeamA);
         displayYellowCardsForTeamB(amountOfYellowCardsTeamB);
         displayRedCardsForTeamB(amountOfRedCardsTeamB);
+        displayStopwatchTime(stopwatchCurrentTime);
+
     }
 
     /**
      * Displays stopwatch.
      *
-     *
+     * @param stopwatchCurrentTime
      */
-
-    public void displayStopwatchTime() { //TODO: przekazac do metoty argument
+    public void displayStopwatchTime(String stopwatchCurrentTime) {
         TextView stopwatchTextView = (TextView) findViewById((R.id.stopwatch));
-        stopwatchTextView.setText((int) stopwatch);
+        stopwatchTextView.setText(stopwatchCurrentTime);
     }
 
+    /**
+     * Update stopwatch
+     */
+    public void updateStopwatch(View v) {
+        startStopwatch();
+    }
+
+    public void startStopwatch() {
+        if (!isRunning) {
+            isRunning = true;
+            stopWatch = new TimeCalculator(this);
+            stopWatch.execute();
+        }
+    }
+
+    public void reportFinish() {
+        isRunning = false;
+    }
 
     public class ScoreCounterTextView extends android.support.v7.widget.AppCompatTextView {
 
@@ -248,4 +288,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-
