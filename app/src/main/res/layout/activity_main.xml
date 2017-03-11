@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/black"
                     android:gravity="center"
-                    android:text="00:00:00"
+                    android:text="@string/default_stopwatch_value"
                     android:textColor="@color/colorAccent"
                     android:textSize="72sp" />
 
@@ -47,7 +47,7 @@
                         android:layout_weight="1"
                         android:onClick="updateStopwatch"
                         android:tint="@android:color/background_light"
-                        app:srcCompat="@android:drawable/ic_media_play" />
+                        app:srcCompat="@drawable/whistle" />
 
                     <ImageButton
                         android:id="@+id/imageButton2"
@@ -63,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:tint="@android:color/background_light"
-                        app:srcCompat="@android:drawable/ic_input_add" />
+                        app:srcCompat="@drawable/stopwatchnew" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -168,7 +168,7 @@
                         android:layout_weight="1"
                         android:onClick="addOneYellowCardForTeamA"
                         android:tint="@color/yellowCardColor"
-                        app:srcCompat="@android:drawable/ic_input_add" />
+                        app:srcCompat="@drawable/yellowcard" />
 
                     <ImageButton
                         android:id="@+id/red_card_add_button_team_a"
@@ -177,7 +177,7 @@
                         android:layout_weight="1"
                         android:onClick="addOneRedCardForTeamA"
                         android:tint="@color/redCardColor"
-                        app:srcCompat="@android:drawable/ic_input_add" />
+                        app:srcCompat="@drawable/redcard" />
 
 
                 </LinearLayout>
@@ -283,7 +283,7 @@
                         android:layout_weight="1"
                         android:onClick="addOneYellowCardForTeamB"
                         android:tint="@color/yellowCardColor"
-                        app:srcCompat="@android:drawable/ic_input_add" />
+                        app:srcCompat="@drawable/yellowcard" />
 
                     <ImageButton
                         android:id="@+id/red_card_add_button_team_b"
@@ -292,7 +292,7 @@
                         android:layout_weight="1"
                         android:onClick="addOneRedCardForTeamB"
                         android:tint="@color/redCardColor"
-                        app:srcCompat="@android:drawable/ic_input_add" />
+                        app:srcCompat="@drawable/redcard" />
 
 
                 </LinearLayout>
@@ -312,13 +312,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="BT DISPLAY" />
+            android:drawableLeft="@drawable/sent_to_board"
+            android:gravity="center"
+            android:paddingLeft="18dp"
+            android:text="SENT TO BOARD" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="DISPLAY MDOE" />
+            android:drawableLeft="@drawable/switch_display_option"
+            android:paddingLeft="18dp"
+            android:text="DISPLAY MODE" />
     </LinearLayout>
 
 </RelativeLayout>

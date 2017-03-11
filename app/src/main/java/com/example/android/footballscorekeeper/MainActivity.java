@@ -56,10 +56,12 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         teamAScoreTextView = (TextView) findViewById(R.id.team_a_score);
         teamAYellowCardTextView = (TextView) findViewById(R.id.team_a_yellow_card);
         teamARedCardTextView = (TextView) findViewById(R.id.team_a_red_card);
+
         // Team B
         teamBScoreTextView = (TextView) findViewById(R.id.team_b_score);
         teamBYellowCardTextView = (TextView) findViewById(R.id.team_b_yellow_card);
         teamBRedCardTextView = (TextView) findViewById(R.id.team_b_red_card);
+
         //Stopwatch
         stopwatchTextView = (TextView) findViewById(R.id.stopwatch);
 
