@@ -1,10 +1,8 @@
 package com.example.android.footballscorekeeper;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,15 +15,16 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     private int amountOfYellowCardsTeamB = 0;
     private int amountOfRedCardsTeamB = 0;
     private String stopwatchCurrentTime = "00:00:00";
-
     //Team A
     private TextView teamAScoreTextView;
     private TextView teamAYellowCardTextView;
     private TextView teamARedCardTextView;
+    private TextView teamANameTextView;
     //Team B
     private TextView teamBScoreTextView;
     private TextView teamBYellowCardTextView;
     private TextView teamBRedCardTextView;
+    private TextView teamBNameTextView;
     //Stopwatch
     private TextView stopwatchTextView;
     private boolean isRunning = false;
@@ -56,24 +55,32 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         teamAScoreTextView = (TextView) findViewById(R.id.team_a_score);
         teamAYellowCardTextView = (TextView) findViewById(R.id.team_a_yellow_card);
         teamARedCardTextView = (TextView) findViewById(R.id.team_a_red_card);
+        teamANameTextView = (TextView) findViewById(R.id.team_a_name);
 
         // Team B
         teamBScoreTextView = (TextView) findViewById(R.id.team_b_score);
         teamBYellowCardTextView = (TextView) findViewById(R.id.team_b_yellow_card);
         teamBRedCardTextView = (TextView) findViewById(R.id.team_b_red_card);
+        teamBNameTextView = (TextView) findViewById(R.id.team_b_name);
 
         //Stopwatch
         stopwatchTextView = (TextView) findViewById(R.id.stopwatch);
 
-        // *** Creating a new custom Typeface for Counter digits
-        Typeface CounterCustomFont = Typeface.createFromAsset(getAssets(), "fonts/KARNIVOD.ttf");
-        teamAScoreTextView.setTypeface(CounterCustomFont);
-        teamAYellowCardTextView.setTypeface(CounterCustomFont);
-        teamARedCardTextView.setTypeface(CounterCustomFont);
-        teamBScoreTextView.setTypeface(CounterCustomFont);
-        teamBYellowCardTextView.setTypeface(CounterCustomFont);
-        teamBRedCardTextView.setTypeface(CounterCustomFont);
-        stopwatchTextView.setTypeface(CounterCustomFont);
+        // *** Creating a new custom Typeface
+        // For digits of counters
+        Typeface counterCustomFont = Typeface.createFromAsset(getAssets(), "fonts/KARNIVOD.ttf");
+        teamAScoreTextView.setTypeface(counterCustomFont);
+        teamAYellowCardTextView.setTypeface(counterCustomFont);
+        teamARedCardTextView.setTypeface(counterCustomFont);
+        teamBScoreTextView.setTypeface(counterCustomFont);
+        teamBYellowCardTextView.setTypeface(counterCustomFont);
+        teamBRedCardTextView.setTypeface(counterCustomFont);
+        stopwatchTextView.setTypeface(counterCustomFont);
+
+        //For names of teams
+        Typeface teamNameCustomFont = Typeface.createFromAsset(getAssets(), "fonts/KARNIVOF.ttf");
+        teamANameTextView.setTypeface(teamNameCustomFont);
+        teamBNameTextView.setTypeface(teamNameCustomFont);
     }
 
     @Override
@@ -281,12 +288,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         isRunning = false;
     }
 
-    public class ScoreCounterTextView extends android.support.v7.widget.AppCompatTextView {
 
-        public ScoreCounterTextView(Context context, AttributeSet attrs) {
-            super(context, attrs);
-            this.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/KARNIVOD.ttf"));
-        }
-    }
 
 }

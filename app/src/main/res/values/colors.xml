@@ -6,6 +6,6 @@
     <color name="scoreColor">@android:color/black</color>
     <color name="teamFontColor">#616161</color>
     <color name="colorButton">#4CAF50</color>
-    <color name="yellowCardColor">#FFD600</color>
-    <color name="redCardColor">#D50000</color>
+    <color name="yellowCardColor">#ffd600</color>
+    <color name="redCardColor">#d50000</color>
 </resources>

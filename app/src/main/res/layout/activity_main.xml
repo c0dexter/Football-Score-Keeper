@@ -41,7 +41,7 @@
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:id="@+id/imageButton"
+                        android:id="@+id/playButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -50,7 +50,7 @@
                         app:srcCompat="@drawable/whistle" />
 
                     <ImageButton
-                        android:id="@+id/imageButton2"
+                        android:id="@+id/resetButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -58,7 +58,7 @@
                         app:srcCompat="@android:drawable/ic_popup_sync" />
 
                     <ImageButton
-                        android:id="@+id/imageButton8"
+                        android:id="@+id/addTimeButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -82,6 +82,7 @@
                 tools:context="com.example.android.footballscorekeeper.MainActivity">
 
                 <TextView
+                    android:id="@+id/team_a_name"
                     style="@style/TeamNameTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -144,7 +145,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/goalA"
+                    android:id="@+id/goalForTeamAButton"
                     style="@style/scoreButtons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -168,7 +169,7 @@
                         android:layout_weight="1"
                         android:onClick="addOneYellowCardForTeamA"
                         android:tint="@color/yellowCardColor"
-                        app:srcCompat="@drawable/yellowcard" />
+                        app:srcCompat="@drawable/card" />
 
                     <ImageButton
                         android:id="@+id/red_card_add_button_team_a"
@@ -177,7 +178,7 @@
                         android:layout_weight="1"
                         android:onClick="addOneRedCardForTeamA"
                         android:tint="@color/redCardColor"
-                        app:srcCompat="@drawable/redcard" />
+                        app:srcCompat="@drawable/card" />
 
 
                 </LinearLayout>
@@ -196,10 +197,10 @@
                 tools:context="com.example.android.courtcounter.MainActivity">
 
                 <TextView
+                    android:id="@+id/team_b_name"
                     style="@style/TeamNameTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false"
                     android:gravity="center"
                     android:text="@string/second_team" />
 
@@ -259,7 +260,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/goalB"
+                    android:id="@+id/goalForTeamBButton"
                     style="@style/scoreButtons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -283,7 +284,7 @@
                         android:layout_weight="1"
                         android:onClick="addOneYellowCardForTeamB"
                         android:tint="@color/yellowCardColor"
-                        app:srcCompat="@drawable/yellowcard" />
+                        app:srcCompat="@drawable/card" />
 
                     <ImageButton
                         android:id="@+id/red_card_add_button_team_b"
@@ -292,7 +293,7 @@
                         android:layout_weight="1"
                         android:onClick="addOneRedCardForTeamB"
                         android:tint="@color/redCardColor"
-                        app:srcCompat="@drawable/redcard" />
+                        app:srcCompat="@drawable/card" />
 
 
                 </LinearLayout>
@@ -309,6 +310,7 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/sentToScoreBoardButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -318,6 +320,7 @@
             android:text="SENT TO BOARD" />
 
         <Button
+            android:id="@+id/switchViewOnTheScoreBoard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
