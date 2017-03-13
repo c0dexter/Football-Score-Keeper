@@ -54,6 +54,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:enabled="false"
                         android:onClick="resetScoreCounters"
                         app:srcCompat="@android:drawable/ic_popup_sync" />
 
@@ -62,6 +63,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:enabled="false"
                         android:tint="@android:color/background_light"
                         app:srcCompat="@drawable/stopwatchnew" />
 
@@ -149,6 +151,7 @@
                     style="@style/scoreButtons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:onClick="addOnePointsForTeamA"
                     android:text="@string/goal_button"
                     android:textAllCaps="true" />
@@ -167,6 +170,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:enabled="false"
                         android:onClick="addOneYellowCardForTeamA"
                         android:tint="@color/yellowCardColor"
                         app:srcCompat="@drawable/card" />
@@ -176,6 +180,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:enabled="false"
                         android:onClick="addOneRedCardForTeamA"
                         android:tint="@color/redCardColor"
                         app:srcCompat="@drawable/card" />
@@ -264,6 +269,7 @@
                     style="@style/scoreButtons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:onClick="addOnePointsForTeamB"
                     android:text="@string/goal_button"
                     android:textAllCaps="true" />
@@ -282,6 +288,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:enabled="false"
                         android:onClick="addOneYellowCardForTeamB"
                         android:tint="@color/yellowCardColor"
                         app:srcCompat="@drawable/card" />
@@ -291,6 +298,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:enabled="false"
                         android:onClick="addOneRedCardForTeamB"
                         android:tint="@color/redCardColor"
                         app:srcCompat="@drawable/card" />

@@ -1,9 +1,13 @@
 package com.example.android.footballscorekeeper;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements StopWatchInterface {
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     private TextView stopwatchTextView;
     private boolean isRunning = false;
     private TimeCalculator stopWatch;
+    private boolean statusOfButtons = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         Typeface teamNameCustomFont = Typeface.createFromAsset(getAssets(), "fonts/KARNIVOF.ttf");
         teamANameTextView.setTypeface(teamNameCustomFont);
         teamBNameTextView.setTypeface(teamNameCustomFont);
+
+        enableButtons(statusOfButtons);
     }
 
     @Override
@@ -274,6 +281,8 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
      */
     public void updateStopwatch(View v) {
         startStopwatch();
+        statusOfButtons = true;
+        enableButtons(statusOfButtons);
     }
 
     public void startStopwatch() {
@@ -288,6 +297,59 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         isRunning = false;
     }
 
+    public void enableButtons(boolean status) {
+        // *** BUTTONS MAPPING
+        // Top Buttons
+        ImageButton playButton = (ImageButton) findViewById(R.id.playButton);
+        ImageButton resetButton = (ImageButton) findViewById(R.id.resetButton);
+        ImageButton addTimeButton = (ImageButton) findViewById(R.id.addTimeButton);
+
+        // Team A Buttons
+        Button goalForTeamAButton = (Button) findViewById(R.id.goalForTeamAButton);
+        ImageButton yellowCardAddButtonTeamA = (ImageButton) findViewById(R.id.yellow_card_add_button_team_a);
+        ImageButton redCardAddButtonTeamA = (ImageButton) findViewById(R.id.red_card_add_button_team_a);
+
+        // Team B Buttons
+        Button goalForTeamBButton = (Button) findViewById(R.id.goalForTeamBButton);
+        ImageButton yellowCardButtonTeamB = (ImageButton) findViewById(R.id.yellow_card_add_button_team_b);
+        ImageButton redCardButtonTeamB = (ImageButton) findViewById(R.id.red_card_add_button_team_b);
+
+        // Score Board Buttons
+        Button sentDataToScoreBoardButton = (Button) findViewById(R.id.sentToScoreBoardButton);
+        Button switchViewOfScoreBoardButton = (Button) findViewById(R.id.switchViewOnTheScoreBoard);
+
+        // Set status for fields
+        playButton.setEnabled(true);
+        sentDataToScoreBoardButton.setEnabled(true);
+        switchViewOfScoreBoardButton.setEnabled(true);
+        resetButton.setEnabled(status);
+        addTimeButton.setEnabled(status);
+        goalForTeamAButton.setEnabled(status);
+        yellowCardAddButtonTeamA.setEnabled(status);
+        redCardAddButtonTeamA.setEnabled(status);
+        goalForTeamBButton.setEnabled(status);
+        yellowCardButtonTeamB.setEnabled(status);
+        redCardButtonTeamB.setEnabled(status);
 
 
+        if (status == false) {
+            resetButton.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            addTimeButton.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            goalForTeamAButton.setTextColor(Color.GRAY);
+            yellowCardAddButtonTeamA.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            redCardAddButtonTeamA.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            goalForTeamBButton.setTextColor(Color.GRAY);
+            yellowCardButtonTeamB.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            redCardButtonTeamB.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        } else {
+            resetButton.clearColorFilter();
+            addTimeButton.clearColorFilter();
+            goalForTeamAButton.setTextColor(Color.WHITE);
+            yellowCardAddButtonTeamA.clearColorFilter();
+            redCardAddButtonTeamA.clearColorFilter();
+            goalForTeamBButton.setTextColor(Color.WHITE);
+            yellowCardButtonTeamB.clearColorFilter();
+            redCardButtonTeamB.clearColorFilter();
+        }
+    }
 }
