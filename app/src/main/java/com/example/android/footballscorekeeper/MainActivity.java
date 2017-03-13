@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     private int scoreTeamB = 0;
     private int amountOfYellowCardsTeamB = 0;
     private int amountOfRedCardsTeamB = 0;
-    private String stopwatchCurrentTime = "00:00:00";
+    private String stopwatchCurrentTime = "00:00";
     //Team A
     private TextView teamAScoreTextView;
     private TextView teamAYellowCardTextView;
@@ -253,7 +253,8 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         amountOfRedCardsTeamA = 0;
         amountOfYellowCardsTeamB = 0;
         amountOfRedCardsTeamB = 0;
-        stopwatchCurrentTime = "00:00:00";
+        stopwatchCurrentTime = "00:00";
+        statusOfButtons = false;
 
         //Display default values
         displayForTeamA(scoreTeamA);
@@ -263,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         displayYellowCardsForTeamB(amountOfYellowCardsTeamB);
         displayRedCardsForTeamB(amountOfRedCardsTeamB);
         displayStopwatchTime(stopwatchCurrentTime);
+        enableButtons(statusOfButtons);
 
     }
 
@@ -331,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         yellowCardButtonTeamB.setEnabled(status);
         redCardButtonTeamB.setEnabled(status);
 
-
+        // Change color of buttons if are enabled/disabled
         if (status == false) {
             resetButton.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
             addTimeButton.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
