@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
             amountOfRedCardsTeamB = savedInstanceState.getInt("TEAM_B_RED_CARD");
             // Stopwatch
             stopwatchCurrentTime = savedInstanceState.getString("STOPWATCH_TIMER");
+            statusOfButtons = savedInstanceState.getBoolean("STATUS_OF_BUTTONS");
         }
 
         setContentView(R.layout.activity_main);
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         teamANameTextView.setTypeface(teamNameCustomFont);
         teamBNameTextView.setTypeface(teamNameCustomFont);
 
+
         enableButtons(statusOfButtons);
     }
 
@@ -108,11 +110,29 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         if (stopWatch != null) {
             outState.putBoolean("STOPWATCH_STARTED", stopWatch.IsStarted());
             outState.putLong("STOPWATCH_START_TIME", stopWatch.GetStartTime());
-            stopWatch.Stop();
+            //stopWatch.Stop();
         } else {
             outState.putBoolean("STOPWATCH_STARTED", false);
         }
+
+        //
+        outState.putBoolean("STATUS_OF_BUTTONS", statusOfButtons);
+
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (stopWatch != null) {
+            stopWatch.Stop();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        enableButtons(statusOfButtons); //TODO: Check why this value is not restored properly
     }
 
     @Override
@@ -132,6 +152,8 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
             stopWatch = new TimeCalculator(this, savedInstanceState.getLong("STOPWATCH_START_TIME"));
             stopWatch.execute();
         }
+
+        statusOfButtons = savedInstanceState.getBoolean("STATUS_OF_BUTTONS");
 
     }
 
