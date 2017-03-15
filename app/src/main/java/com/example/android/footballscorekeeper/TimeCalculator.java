@@ -45,7 +45,7 @@ public class TimeCalculator extends AsyncTask<Void, String, Void> {
 
             String seconds = Integer.toString((int) (elapsedTime % 60));
             String minutes = Integer.toString((int) ((elapsedTime % 3600) / 60));
-            int foo = Integer.parseInt(minutes);
+            int destinationTime = Integer.parseInt(minutes);
 
             if (seconds.length() < 2) {
                 seconds = "0" + seconds;
@@ -55,12 +55,11 @@ public class TimeCalculator extends AsyncTask<Void, String, Void> {
                 minutes = "0" + minutes;
             }
 
-
             String writeThis = minutes + ":" + seconds;
 
             publishProgress(writeThis);
 
-            if (foo >= 1) {
+            if (destinationTime >= 90) {
                 turnedOn = false;
             }
 

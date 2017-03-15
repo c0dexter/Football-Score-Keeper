@@ -1,17 +1,22 @@
 package com.example.android.footballscorekeeper;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements StopWatchInterface {
+public class MainActivity extends AppCompatActivity implements StopWatchInterface, NumberPicker.OnValueChangeListener {
 
+    // Additional time picker based on list picker alert dialog http://stackoverflow.com/questions/17944061/how-to-use-number-picker-with-dialog
+    private static Dialog d;
     private int scoreTeamA = 0;
     private int amountOfYellowCardsTeamA = 0;
     private int amountOfRedCardsTeamA = 0;
@@ -19,21 +24,24 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     private int amountOfYellowCardsTeamB = 0;
     private int amountOfRedCardsTeamB = 0;
     private String stopwatchCurrentTime = "00:00";
-    //Team A
+    // Team A
     private TextView teamAScoreTextView;
     private TextView teamAYellowCardTextView;
     private TextView teamARedCardTextView;
     private TextView teamANameTextView;
-    //Team B
+    // Team B
     private TextView teamBScoreTextView;
     private TextView teamBYellowCardTextView;
     private TextView teamBRedCardTextView;
     private TextView teamBNameTextView;
-    //Stopwatch
+    // Stopwatch
     private TextView stopwatchTextView;
     private boolean isRunning = false;
     private TimeCalculator stopWatch;
+    private int additionalTime = 0;
+    // Status of buttons
     private boolean statusOfButtons = false;
+    private TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         teamBRedCardTextView = (TextView) findViewById(R.id.team_b_red_card);
         teamBNameTextView = (TextView) findViewById(R.id.team_b_name);
 
-        //Stopwatch
+        // Stopwatch
         stopwatchTextView = (TextView) findViewById(R.id.stopwatch);
 
         // *** Creating a new custom Typeface
@@ -83,13 +91,62 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         teamBRedCardTextView.setTypeface(counterCustomFont);
         stopwatchTextView.setTypeface(counterCustomFont);
 
-        //For names of teams
+        // For names of teams
         Typeface teamNameCustomFont = Typeface.createFromAsset(getAssets(), "fonts/KARNIVOF.ttf");
         teamANameTextView.setTypeface(teamNameCustomFont);
         teamBNameTextView.setTypeface(teamNameCustomFont);
 
-
+        // Activation other buttons on the screen
         enableButtons(statusOfButtons);
+
+        // Opening dialog by clicking on button for adding additional time for stopwatch
+        ImageButton additionalTimeButton = (ImageButton) findViewById(R.id.addTimeButton);
+
+        additionalTimeButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                show();
+            }
+        });
+    }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+
+        Log.i("value is", "" + newVal);
+
+    }
+
+    public void show() //TODO: improve thid dialog, makelogic for adding time
+    {
+
+        final Dialog d = new Dialog(MainActivity.this);
+        d.setTitle("NumberPicker");
+        d.setContentView(R.layout.dialog);
+        Button b1 = (Button) d.findViewById(R.id.button1);
+        Button b2 = (Button) d.findViewById(R.id.button2);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        np.setMaxValue(30); // max value 100
+        np.setMinValue(0);   // min value 0
+        np.setWrapSelectorWheel(false);
+        np.setOnValueChangedListener(this);
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv.setText(String.valueOf(np.getValue())); //set the value to textview
+                d.dismiss();
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss(); // dismiss the dialog
+            }
+        });
+        d.show();
+
+
     }
 
     @Override
@@ -115,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
             outState.putBoolean("STOPWATCH_STARTED", false);
         }
 
-        //
         outState.putBoolean("STATUS_OF_BUTTONS", statusOfButtons);
 
         super.onSaveInstanceState(outState);
@@ -132,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     @Override
     protected void onRestart() {
         super.onRestart();
-        enableButtons(statusOfButtons); //TODO: Check why this value is not restored properly
+        enableButtons(statusOfButtons);
     }
 
     @Override
@@ -309,6 +365,10 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         enableButtons(statusOfButtons);
     }
 
+    public void addAdditionalTimeToStopwatch() {
+
+    }
+
     public void startStopwatch() {
         if (!isRunning) {
             isRunning = true;
@@ -376,4 +436,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
             redCardButtonTeamB.clearColorFilter();
         }
     }
+
+
 }
