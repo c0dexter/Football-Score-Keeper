@@ -10,6 +10,11 @@ public class TimeCalculator extends AsyncTask<Void, String, Void> {
     long start;
     private StopWatchInterface stopWatchInterface;
     private boolean turnedOn;
+    private int currentTime = 0;
+    private int defaultTime = 10;
+    private int stopwatchAdditionalTime = 0;
+    private int destinationTime = 0;
+    private boolean defaultTimeDone = false;
 
     public TimeCalculator(StopWatchInterface swInterface) {
         stopWatchInterface = swInterface;
@@ -35,6 +40,7 @@ public class TimeCalculator extends AsyncTask<Void, String, Void> {
         turnedOn = false;
     }
 
+
     @Override
     protected Void doInBackground(Void... params) {
 
@@ -45,7 +51,7 @@ public class TimeCalculator extends AsyncTask<Void, String, Void> {
 
             String seconds = Integer.toString((int) (elapsedTime % 60));
             String minutes = Integer.toString((int) ((elapsedTime % 3600) / 60));
-            int destinationTime = Integer.parseInt(minutes);
+            currentTime = Integer.parseInt(seconds);
 
             if (seconds.length() < 2) {
                 seconds = "0" + seconds;
@@ -56,20 +62,34 @@ public class TimeCalculator extends AsyncTask<Void, String, Void> {
             }
 
             String writeThis = minutes + ":" + seconds;
-
             publishProgress(writeThis);
-
-            if (destinationTime >= 90) {
-                turnedOn = false;
-            }
+            setAdditionalTime();
+            checkTimeRule();
 
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
         return null;
+    }
+
+    public void setAdditionalTime() {
+        stopwatchAdditionalTime = MainActivity.additionalTime;
+        destinationTime = defaultTime + stopwatchAdditionalTime;
+    }
+
+    public void checkTimeRule() {
+        if (currentTime <= defaultTime && defaultTimeDone == false) {
+            defaultTimeDone = false;
+        } else if (currentTime >= defaultTime) {
+            defaultTimeDone = true;
+            if (currentTime >= destinationTime && defaultTimeDone == true) {
+                turnedOn = false;
+            }
+        }
     }
 
     @Override
