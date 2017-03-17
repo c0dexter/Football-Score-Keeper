@@ -8,7 +8,7 @@
     android:background="@android:color/white">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/mainLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -156,8 +156,6 @@
                     android:text="@string/goal_button"
                     android:textAllCaps="true" />
 
-                <!-- TODO: Dorobić kolejne przyciski -->
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -274,8 +272,6 @@
                     android:text="@string/goal_button"
                     android:textAllCaps="true" />
 
-                <!-- TODO: Dorobić kolejne przyciski -->
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -307,6 +303,20 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+    </LinearLayout>
+
+    <!-- TODO: make scrollable Textview for displaying actions-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/mainLinearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black" />
+
     </LinearLayout>
 
     <LinearLayout

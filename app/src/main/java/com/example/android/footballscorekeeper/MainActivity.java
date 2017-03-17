@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
 
         setContentView(R.layout.activity_main);
 
-        // *** DECLARATION TEXTVIEWS SO WE CAN MANIPULATE THEM LATER
+        // *** DECLARATION TEXT VIEWS SO WE CAN MANIPULATE THEM LATER
         // Team A
         teamAScoreTextView = (TextView) findViewById(R.id.team_a_score);
         teamAYellowCardTextView = (TextView) findViewById(R.id.team_a_yellow_card);
@@ -131,7 +131,8 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         buttonSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                additionalTime = (Integer.parseInt(String.valueOf(np.getValue()))); //set the value for additional time
+                additionalTime = (Integer.parseInt(String.valueOf(np.getValue()))); // Get value from picker
+                stopWatch.setAdditionalTime(additionalTime);                        // Set additional time
                 myDialog.dismiss();
             }
         });
