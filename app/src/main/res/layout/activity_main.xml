@@ -303,21 +303,29 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <!-- TODO: make scrollable Textview for displaying actions-->
+        <!-- TODO: make scrollable Textview for displaying actions-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/mainLinearLayout">
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black" />
+            android:layout_alignBottom="@id/mainLinearLayout"
+            android:layout_margin="@dimen/score_button_margin_horizontal">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="03:21 Team A has a GOAL!\n12:34 Team A yellow card\n35:12 Team B yellow card\n46:46 Team B has a GOAL!"
+                    android:textColor="@android:color/black" />
+            </ScrollView>
+        </LinearLayout>
 
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/btOptionsPanel"
