@@ -11,4 +11,5 @@
     <dimen name="score_font_size">68dp</dimen>
     <dimen name="card_size">32sp</dimen>
     <dimen name="dividers_thickness">1dp</dimen>
+    <dimen name="padding_for_bord_buttons_icons">18dp</dimen>
 </resources>

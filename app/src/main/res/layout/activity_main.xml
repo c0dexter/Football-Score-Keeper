@@ -37,7 +37,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#212121"
+                    android:background="@color/backgroundColorForButtons"
                     android:orientation="horizontal">
 
                     <ImageButton
@@ -68,7 +68,9 @@
                         app:srcCompat="@drawable/stopwatchnew" />
 
                 </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -111,7 +113,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="0"
+                            android:text="@string/default_score_team_a"
                             android:textAlignment="center" />
 
                     </LinearLayout>
@@ -129,7 +131,7 @@
                             style="@style/CardTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/default_yellow_card_amount_team_a"
                             android:textColor="@color/yellowCardColor" />
 
 
@@ -139,7 +141,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="28dp"
-                            android:text="0"
+                            android:text="@string/default_red_card_amount_team_a"
                             android:textColor="@color/redCardColor" />
 
                     </RelativeLayout>
@@ -153,6 +155,7 @@
                     android:layout_height="wrap_content"
                     android:enabled="false"
                     android:onClick="addOnePointsForTeamA"
+                    android:padding="20dp"
                     android:text="@string/goal_button"
                     android:textAllCaps="true" />
 
@@ -183,13 +186,11 @@
                         android:tint="@color/redCardColor"
                         app:srcCompat="@drawable/card" />
 
-
                 </LinearLayout>
-
 
             </LinearLayout>
 
-            <View style="@style/VerticalDivider"></View>
+            <View style="@style/VerticalDivider" />
 
             <!-- TEAM B -->
             <LinearLayout
@@ -227,7 +228,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="0"
+                            android:text="@string/default_score_team_b"
                             android:textAlignment="center" />
 
                     </LinearLayout>
@@ -245,7 +246,7 @@
                             style="@style/CardTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/default_yellow_card_amount_team_b"
                             android:textColor="@color/yellowCardColor" />
 
 
@@ -255,7 +256,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="28dp"
-                            android:text="0"
+                            android:text="@string/default_red_card_amount_team_b"
                             android:textColor="@color/redCardColor" />
 
                     </RelativeLayout>
@@ -269,6 +270,7 @@
                     android:layout_height="wrap_content"
                     android:enabled="false"
                     android:onClick="addOnePointsForTeamB"
+                    android:padding="20dp"
                     android:text="@string/goal_button"
                     android:textAllCaps="true" />
 
@@ -299,9 +301,10 @@
                         android:tint="@color/redCardColor"
                         app:srcCompat="@drawable/card" />
 
-
                 </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
         <!-- TODO: make scrollable Textview for displaying actions-->
@@ -309,7 +312,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/mainLinearLayout"
             android:layout_margin="@dimen/score_button_margin_horizontal">
 
             <ScrollView
@@ -319,20 +321,19 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="03:21 Team A has a GOAL!\n12:34 Team A yellow card\n35:12 Team B yellow card\n46:46 Team B has a GOAL!"
                     android:textColor="@android:color/black" />
             </ScrollView>
+
         </LinearLayout>
 
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/btOptionsPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#212121"
+        android:background="@color/backgroundColorForButtons"
         android:orientation="horizontal">
 
         <Button
@@ -341,9 +342,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableLeft="@drawable/sent_to_board"
+            android:drawableStart="@drawable/sent_to_board"
             android:gravity="center"
-            android:paddingLeft="18dp"
-            android:text="SENT TO BOARD" />
+            android:text="@string/sent_to_board" />
 
         <Button
             android:id="@+id/switchViewOnTheScoreBoard"
@@ -351,8 +352,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableLeft="@drawable/switch_display_option"
-            android:paddingLeft="18dp"
-            android:text="DISPLAY MODE" />
+            android:drawableStart="@drawable/switch_display_option"
+            android:text="@string/display_mode" />
+
     </LinearLayout>
 
 </RelativeLayout>

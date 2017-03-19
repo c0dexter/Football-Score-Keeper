@@ -8,4 +8,5 @@
     <color name="colorButton">#4CAF50</color>
     <color name="yellowCardColor">#ffd600</color>
     <color name="redCardColor">#d50000</color>
+    <color name="backgroundColorForButtons">#212121</color>
 </resources>

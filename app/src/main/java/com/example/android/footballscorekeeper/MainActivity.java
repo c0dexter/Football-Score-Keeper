@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements StopWatchInterface, NumberPicker.OnValueChangeListener {
 
-    // Additional time picker based on list picker alert dialog http://stackoverflow.com/questions/17944061/how-to-use-number-picker-with-dialog
-
     public static int additionalTime = 0;
     private static Dialog myDialog;
     private int scoreTeamA = 0;
@@ -408,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         redCardButtonTeamB.setEnabled(status);
 
         // Change color of buttons if are enabled/disabled
-        if (status == false) {
+        if (!status) {
             resetButton.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
             addTimeButton.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
             goalForTeamAButton.setTextColor(Color.GRAY);

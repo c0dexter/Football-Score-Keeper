@@ -29,13 +29,12 @@
             android:textColor="@color/colorAccent"
             android:textSize="72sp" />
 
-
         <!-- STOPWATCH BUUTONS -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#212121"
+            android:background="@color/backgroundColorForButtons"
             android:orientation="horizontal">
 
             <ImageButton
@@ -71,7 +70,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
     <!-- BODY: SCORE BUTTONS [BUTTONS TEAM A] | [BUTTONS TEAM B] -->
     <LinearLayout
@@ -151,7 +149,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_horizontal"
-                                    android:text="0"
+                                    android:text="@string/default_score_team_a"
                                     android:textAlignment="center" />
 
                             </LinearLayout>
@@ -168,7 +166,7 @@
                                     style="@style/CardTextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="0"
+                                    android:text="@string/default_yellow_card_amount_team_a"
                                     android:textColor="@color/yellowCardColor" />
 
                                 <TextView
@@ -177,14 +175,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="28dp"
-                                    android:text="0"
+                                    android:text="@string/default_red_card_amount_team_a"
                                     android:textColor="@color/redCardColor" />
 
                             </RelativeLayout>
 
                         </LinearLayout>
 
-                        <View style="@style/VerticalDivider"></View>
+                        <View style="@style/VerticalDivider" />
 
                         <!-- PASTE SCORES VIEWS FOR TEAM B -->
 
@@ -209,7 +207,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_horizontal"
-                                    android:text="0"
+                                    android:text="@string/default_score_team_b"
                                     android:textAlignment="center" />
 
                             </LinearLayout>
@@ -226,7 +224,7 @@
                                     style="@style/CardTextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="0"
+                                    android:text="@string/default_yellow_card_amount_team_b"
                                     android:textColor="@color/yellowCardColor" />
 
                                 <TextView
@@ -235,7 +233,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="28dp"
-                                    android:text="0"
+                                    android:text="@string/default_red_card_amount_team_b"
                                     android:textColor="@color/redCardColor" />
 
                             </RelativeLayout>
@@ -251,7 +249,7 @@
         </LinearLayout>
         <!-- END OF LEFT COLUMN -->
 
-        <View style="@style/VerticalDividerForLandscapeView"></View>
+        <View style="@style/VerticalDividerForLandscapeView" />
 
         <!-- START RIGHT COLUMN -->
         <LinearLayout
@@ -269,7 +267,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                !-- PUT HERE BUTTONS FOR [TEAM A] || [TEAM B] IN HORIZONTAL LINEAR LAYOUT -->
+                <!-- PUT HERE BUTTONS FOR [TEAM A] || [TEAM B] IN HORIZONTAL LINEAR LAYOUT -->
 
                 <!-- TEAM A -->
                 <LinearLayout
@@ -280,7 +278,7 @@
                     tools:context="com.example.android.courtcounter.MainActivity">
 
                     <TextView
-                        android:id="@id/team_a_name"
+                        android:id="@+id/team_a_name"
                         style="@style/TeamNameTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -337,7 +335,7 @@
                     tools:context="com.example.android.courtcounter.MainActivity">
 
                     <TextView
-                        android:id="@id/team_b_name"
+                        android:id="@+id/team_b_name"
                         style="@style/TeamNameTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -398,7 +396,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:background="#212121"
+                    android:background="@color/backgroundColorForButtons"
                     android:orientation="horizontal">
 
                     <Button
@@ -407,9 +405,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/sent_to_board"
+                        android:drawableStart="@drawable/sent_to_board"
                         android:gravity="center"
-                        android:paddingLeft="18dp"
-                        android:text="SENT TO BOARD" />
+                        android:paddingLeft="@dimen/padding_for_bord_buttons_icons"
+                        android:text="@string/sent_to_board" />
 
                     <Button
                         android:id="@+id/switchViewOnTheScoreBoard"
@@ -417,8 +416,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/switch_display_option"
-                        android:paddingLeft="18dp"
-                        android:text="DISPLAY MODE" />
+                        android:drawableStart="@drawable/switch_display_option"
+                        android:paddingLeft="@dimen/padding_for_bord_buttons_icons"
+                        android:text="@string/display_mode" />
                 </LinearLayout>
 
             </RelativeLayout>

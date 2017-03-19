@@ -5,4 +5,12 @@
     <string name="goal_button">goal!</string>
     <string name="reset_button">reset</string>
     <string name="default_stopwatch_value">"00:00"</string>
+    <string name="sent_to_board">sent to board</string>
+    <string name="display_mode">display mode</string>
+    <string name="default_score_team_a">0</string>
+    <string name="default_yellow_card_amount_team_a">0</string>
+    <string name="default_red_card_amount_team_a">0</string>
+    <string name="default_score_team_b">0</string>
+    <string name="default_yellow_card_amount_team_b">0</string>
+    <string name="default_red_card_amount_team_b">0</string>
 </resources>
