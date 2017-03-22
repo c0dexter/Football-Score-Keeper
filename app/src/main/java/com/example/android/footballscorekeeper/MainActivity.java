@@ -1,6 +1,9 @@
 package com.example.android.footballscorekeeper;
 
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -13,10 +16,15 @@ import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Set;
+import java.util.UUID;
+
 public class MainActivity extends AppCompatActivity implements StopWatchInterface, NumberPicker.OnValueChangeListener {
 
-    public static int additionalTime = 0;
     private static Dialog myDialog;
+    public int additionalTime = 0;
     private int scoreTeamA = 0;
     private int amountOfYellowCardsTeamA = 0;
     private int amountOfRedCardsTeamA = 0;
@@ -28,12 +36,10 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     private TextView teamAScoreTextView;
     private TextView teamAYellowCardTextView;
     private TextView teamARedCardTextView;
-    private TextView teamANameTextView;
     // Team B
     private TextView teamBScoreTextView;
     private TextView teamBYellowCardTextView;
     private TextView teamBRedCardTextView;
-    private TextView teamBNameTextView;
     // Stopwatch
     private TextView stopwatchTextView;
     private boolean isRunning = false;
@@ -41,9 +47,66 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     // Status of buttons
     private boolean statusOfButtons = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            // Device does not support Bluetooth
+        }
+
+
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+        BluetoothDevice myDevice = null;
+        BluetoothSocket mmSocket = null;
+
+        if (pairedDevices.size() > 0) {
+            // There are paired devices. Get the name and address of each paired device.
+            for (BluetoothDevice device : pairedDevices) {
+                String deviceName = device.getName();
+                String deviceHardwareAddress = device.getAddress(); // MAC address
+
+                if (device.getName().contains("HC-05")) myDevice = device;
+            }
+        }
+
+        if (myDevice != null) {
+            BluetoothSocket tmp = null;
+
+            try {
+                // Get a BluetoothSocket to connect with the given BluetoothDevice.
+                // MY_UUID is the app's UUID string, also used in the server code.
+                tmp = myDevice.createInsecureRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+            } catch (IOException e) {
+                Log.e("Device", "Socket's create() method failed", e);
+            }
+            mmSocket = tmp;
+        }
+
+        if (mmSocket != null) {
+            try {
+                // Connect to the remote device through the socket. This call blocks
+                // until it succeeds or throws an exception.
+                mmSocket.connect();
+
+
+                mmSocket.getOutputStream().write("Score Keeper App".getBytes(Charset.forName("UTF-8")));
+
+                mmSocket.close();
+            } catch (IOException connectException) {
+                // Unable to connect; close the socket and return.
+                try {
+                    mmSocket.close();
+                } catch (IOException closeException) {
+                    Log.e("ss", "Could not close the client socket", closeException);
+                }
+            }
+
+        }
+
 
         // *** RECOVERING THE INSTANCE STATE
         if (savedInstanceState != null) {
@@ -68,12 +131,12 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         teamAScoreTextView = (TextView) findViewById(R.id.team_a_score);
         teamAYellowCardTextView = (TextView) findViewById(R.id.team_a_yellow_card);
         teamARedCardTextView = (TextView) findViewById(R.id.team_a_red_card);
-        teamANameTextView = (TextView) findViewById(R.id.team_a_name);
+        TextView teamANameTextView = (TextView) findViewById(R.id.team_a_name);
         // Team B
         teamBScoreTextView = (TextView) findViewById(R.id.team_b_score);
         teamBYellowCardTextView = (TextView) findViewById(R.id.team_b_yellow_card);
         teamBRedCardTextView = (TextView) findViewById(R.id.team_b_red_card);
-        teamBNameTextView = (TextView) findViewById(R.id.team_b_name);
+        TextView teamBNameTextView = (TextView) findViewById(R.id.team_b_name);
         // Stopwatch
         stopwatchTextView = (TextView) findViewById(R.id.stopwatch);
 
@@ -200,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
             isRunning = true;
             stopWatch = new TimeCalculator(this, savedInstanceState.getLong("STOPWATCH_START_TIME"));
             stopWatch.execute();
+            stopWatch.setAdditionalTime(additionalTime); // This line adding time to destination time after rotate screen
         }
 
         statusOfButtons = savedInstanceState.getBoolean("STATUS_OF_BUTTONS");

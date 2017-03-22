@@ -278,7 +278,7 @@
                     tools:context="com.example.android.courtcounter.MainActivity">
 
                     <TextView
-                        android:id="@+id/team_a_name"
+                        android:id="@+id/team_a_name_landscape_right_side"
                         style="@style/TeamNameTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -335,7 +335,7 @@
                     tools:context="com.example.android.courtcounter.MainActivity">
 
                     <TextView
-                        android:id="@+id/team_b_name"
+                        android:id="@+id/team_b_name_landscape_right_side"
                         style="@style/TeamNameTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
