@@ -24,6 +24,7 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity implements StopWatchInterface, NumberPicker.OnValueChangeListener {
 
     private static Dialog myDialog;
+    final BluetoothHC05 myBluetooth = new BluetoothHC05();
     public int additionalTime = 0;
     private int scoreTeamA = 0;
     private int amountOfYellowCardsTeamA = 0;
@@ -36,76 +37,30 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     private TextView teamAScoreTextView;
     private TextView teamAYellowCardTextView;
     private TextView teamARedCardTextView;
+    private TextView teamANameTextView;
     // Team B
     private TextView teamBScoreTextView;
     private TextView teamBYellowCardTextView;
     private TextView teamBRedCardTextView;
+    private TextView teamBNameTextView;
     // Stopwatch
     private TextView stopwatchTextView;
     private boolean isRunning = false;
     private TimeCalculator stopWatch;
     // Status of buttons
     private boolean statusOfButtons = false;
-
+    // Buttons
+    private Button sendToBoard;
+    private Button switchViewOnTheScoreBoard;
+    // Bluetooth
+    private BluetoothDevice myDevice = null;
+    private BluetoothSocket mmSocket = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter == null) {
-            // Device does not support Bluetooth
-        }
-
-
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-
-        BluetoothDevice myDevice = null;
-        BluetoothSocket mmSocket = null;
-
-        if (pairedDevices.size() > 0) {
-            // There are paired devices. Get the name and address of each paired device.
-            for (BluetoothDevice device : pairedDevices) {
-                String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
-
-                if (device.getName().contains("HC-05")) myDevice = device;
-            }
-        }
-
-        if (myDevice != null) {
-            BluetoothSocket tmp = null;
-
-            try {
-                // Get a BluetoothSocket to connect with the given BluetoothDevice.
-                // MY_UUID is the app's UUID string, also used in the server code.
-                tmp = myDevice.createInsecureRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
-            } catch (IOException e) {
-                Log.e("Device", "Socket's create() method failed", e);
-            }
-            mmSocket = tmp;
-        }
-
-        if (mmSocket != null) {
-            try {
-                // Connect to the remote device through the socket. This call blocks
-                // until it succeeds or throws an exception.
-                mmSocket.connect();
-
-
-                mmSocket.getOutputStream().write("Score Keeper App".getBytes(Charset.forName("UTF-8")));
-
-                mmSocket.close();
-            } catch (IOException connectException) {
-                // Unable to connect; close the socket and return.
-                try {
-                    mmSocket.close();
-                } catch (IOException closeException) {
-                    Log.e("ss", "Could not close the client socket", closeException);
-                }
-            }
-
-        }
+        myBluetooth.BluetoothThread.run();
 
 
         // *** RECOVERING THE INSTANCE STATE
@@ -131,14 +86,42 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         teamAScoreTextView = (TextView) findViewById(R.id.team_a_score);
         teamAYellowCardTextView = (TextView) findViewById(R.id.team_a_yellow_card);
         teamARedCardTextView = (TextView) findViewById(R.id.team_a_red_card);
-        TextView teamANameTextView = (TextView) findViewById(R.id.team_a_name);
+        teamANameTextView = (TextView) findViewById(R.id.team_a_name);
         // Team B
         teamBScoreTextView = (TextView) findViewById(R.id.team_b_score);
         teamBYellowCardTextView = (TextView) findViewById(R.id.team_b_yellow_card);
         teamBRedCardTextView = (TextView) findViewById(R.id.team_b_red_card);
-        TextView teamBNameTextView = (TextView) findViewById(R.id.team_b_name);
+        teamBNameTextView = (TextView) findViewById(R.id.team_b_name);
         // Stopwatch
         stopwatchTextView = (TextView) findViewById(R.id.stopwatch);
+
+
+        // *** DECLARATION BT DISPLAY BUTTONS SO WE CAN MANIPULATE THEM LATE
+        // Buttons for bluetooth options
+        sendToBoard = (Button) findViewById(R.id.sentToScoreBoardButton);
+        switchViewOnTheScoreBoard = (Button) findViewById(R.id.switchViewOnTheScoreBoard);
+
+        // *** DECLARATION LISTENERS FOR BT DISPLAY BUTTONS
+        // Set listeners for buttons
+        View.OnClickListener handlerForSendButton = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                myBluetooth.BluetoothSender.run();
+            }
+        };
+        sendToBoard.setOnClickListener(handlerForSendButton);
+
+
+        View.OnClickListener handlerForSwitchViewOnTheScoreBoardButton = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: add specific method to send a code which will be propagated into Arduino's method
+            }
+        };
+        switchViewOnTheScoreBoard.setOnClickListener(handlerForSwitchViewOnTheScoreBoardButton);
+
 
         // *** Creating a new custom Typeface
         // For digits of counters
@@ -246,6 +229,9 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         enableButtons(statusOfButtons);
     }
 
+    // *** LOGIC TO BUTTONS AND VIEWS
+    //TEAM A
+
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         // Team A
@@ -269,9 +255,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         statusOfButtons = savedInstanceState.getBoolean("STATUS_OF_BUTTONS");
 
     }
-
-    // *** LOGIC TO BUTTONS AND VIEWS
-    //TEAM A
 
     /**
      * Displays the given score for Team A.
@@ -315,6 +298,8 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         scoreView.setText(String.valueOf(amountOfRedCards));
     }
 
+    //TEAM B
+
     /**
      * Increase Team A's amount of red cards by 1
      */
@@ -322,8 +307,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         amountOfRedCardsTeamA = amountOfRedCardsTeamA + 1;
         displayRedCardsForTeamA(amountOfRedCardsTeamA);
     }
-
-    //TEAM B
 
     /**
      * Displays the given score for Team B.
@@ -489,5 +472,96 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
             yellowCardButtonTeamB.clearColorFilter();
             redCardButtonTeamB.clearColorFilter();
         }
+    }
+
+    public String collectData() {
+
+        // Team A
+        String nameOfTeamA = teamANameTextView.getText().toString();
+        String scoreAmountOfTeamA = String.valueOf(scoreTeamA);
+        String yellowCardAmountOfTeamA = teamAYellowCardTextView.getText().toString();
+        String redCardAmountOfTeamA = teamARedCardTextView.getText().toString();
+
+        // Team B
+        String nameOfTeamB = teamBNameTextView.getText().toString();
+        String scoreAmountOfTeamB = String.valueOf(scoreTeamB);
+        String yellowCardAmountOfTeamB = teamBYellowCardTextView.getText().toString();
+        String redCardAmountOfTeamB = teamBRedCardTextView.getText().toString();
+
+        // Final String for sending to Arduino
+        String finalStringToSent = nameOfTeamA + "|" + scoreAmountOfTeamA + "|" + yellowCardAmountOfTeamA + "|" + redCardAmountOfTeamA + "|" +
+                nameOfTeamB + "|" + scoreAmountOfTeamB + "|" + yellowCardAmountOfTeamB + "|" + redCardAmountOfTeamB;
+
+        return finalStringToSent;
+    }
+
+    public class BluetoothHC05 {
+
+        Thread BluetoothThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                if (mBluetoothAdapter == null) {
+                    // Device does not support Bluetooth
+                }
+
+
+                Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+
+                if (pairedDevices.size() > 0) {
+                    // There are paired devices. Get the name and address of each paired device.
+                    for (BluetoothDevice device : pairedDevices) {
+                        //String deviceName = device.getName();
+                        //String deviceHardwareAddress = device.getAddress(); // MAC address
+
+                        if (device.getName().contains("HC-05")) myDevice = device;
+                    }
+                }
+
+                if (myDevice != null) {
+                    BluetoothSocket tmp = null;
+
+                    try {
+                        // Get a BluetoothSocket to connect with the given BluetoothDevice.
+                        // MY_UUID is the app's UUID string, also used in the server code.
+                        tmp = myDevice.createInsecureRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+                    } catch (IOException e) {
+                        Log.e("Device", "Socket's create() method failed", e);
+                    }
+                    mmSocket = tmp;
+                }
+
+
+            }
+
+        });
+
+        Thread BluetoothSender = new Thread(new Runnable() { //TODO: check if method should be executed in new thread
+            @Override
+            public void run() {
+
+                if (mmSocket != null) {
+                    try {
+                        // Connect to the remote device through the socket. This call blocks
+                        // until it succeeds or throws an exception.
+                        mmSocket.connect();
+
+                        mmSocket.getOutputStream().write(collectData().getBytes(Charset.forName("UTF-8")));
+
+                        mmSocket.close();
+                    } catch (IOException connectException) {
+                        // Unable to connect; close the socket and return.
+                        try {
+                            mmSocket.close();
+                        } catch (IOException closeException) {
+                            Log.e("ss", "Could not close the client socket", closeException);
+                        }
+                    }
+
+                }
+            }
+        });
     }
 }

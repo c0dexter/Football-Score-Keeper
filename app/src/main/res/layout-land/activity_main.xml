@@ -407,6 +407,7 @@
                         android:drawableLeft="@drawable/sent_to_board"
                         android:drawableStart="@drawable/sent_to_board"
                         android:gravity="center"
+                        android:onClick=""
                         android:paddingLeft="@dimen/padding_for_bord_buttons_icons"
                         android:text="@string/sent_to_board" />
 
@@ -417,6 +418,7 @@
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/switch_display_option"
                         android:drawableStart="@drawable/switch_display_option"
+                        android:onClick=""
                         android:paddingLeft="@dimen/padding_for_bord_buttons_icons"
                         android:text="@string/display_mode" />
                 </LinearLayout>
