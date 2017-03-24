@@ -556,7 +556,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                         try {
                             mmSocket.close();
                         } catch (IOException closeException) {
-                            Log.e("ss", "Could not close the client socket !", closeException);
+                            Log.e("ss", "Could not close the client socket !!!", closeException);
                         }
                     }
 
