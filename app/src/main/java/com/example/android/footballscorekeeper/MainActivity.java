@@ -52,9 +52,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     // Buttons
     private Button sendToBoard;
     private Button switchViewOnTheScoreBoard;
-    // Bluetooth
-    private BluetoothDevice myDevice = null;
-    private BluetoothSocket mmSocket = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         sendToBoard = (Button) findViewById(R.id.sentToScoreBoardButton);
         switchViewOnTheScoreBoard = (Button) findViewById(R.id.switchViewOnTheScoreBoard);
 
-        // *** DECLARATION LISTENERS FOR BT DISPLAY BUTTONS
-        // Set listeners for buttons
+        // *** DECLARATION LISTENERS FOR BT BUTTONS
+        // Set listeners for button; SEND
         View.OnClickListener handlerForSendButton = new View.OnClickListener() {
 
             @Override
@@ -165,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         myDialog = new Dialog(MainActivity.this);
         myDialog.setTitle("NumberPicker");
         myDialog.setContentView(R.layout.dialog);
-        Button buttonSet = (Button) myDialog.findViewById(R.id.button1);
+        Button buttonSet = (Button) myDialog.findViewById(R.id.button1); //TODO: Change button's IDs, should be more specific
         Button buttonCancel = (Button) myDialog.findViewById(R.id.button2);
         final NumberPicker np = (NumberPicker) myDialog.findViewById(R.id.numberPicker1);
         np.setMaxValue(30); // max value 30
@@ -220,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         if (stopWatch != null) {
             stopWatch.Stop();
         }
+        myBluetooth.Dispose();
         super.onDestroy();
     }
 
@@ -495,7 +494,9 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         return finalStringToSent;
     }
 
-    public class BluetoothHC05 {
+    public class BluetoothHC05 {    // Bluetooth
+        private BluetoothDevice myDevice = null;
+        private BluetoothSocket mmSocket = null;
 
         Thread BluetoothThread = new Thread(new Runnable() {
             @Override
@@ -505,7 +506,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                 if (mBluetoothAdapter == null) {
                     // Device does not support Bluetooth
                 }
-
 
                 Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 
@@ -546,11 +546,11 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                     try {
                         // Connect to the remote device through the socket. This call blocks
                         // until it succeeds or throws an exception.
-                        mmSocket.connect();
+                        if (!mmSocket.isConnected()) mmSocket.connect();
 
                         mmSocket.getOutputStream().write(collectData().getBytes(Charset.forName("UTF-8")));
 
-                        mmSocket.close();
+                        //mmSocket.close();
                     } catch (IOException connectException) {
                         // Unable to connect; close the socket and return.
                         try {
@@ -563,5 +563,16 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                 }
             }
         });
+
+
+        public void Dispose() {
+            if (mmSocket != null) {
+                try {
+                    mmSocket.close();
+                } catch (IOException closeException) {
+                    Log.e("ss", "Could not close the client socket", closeException);
+                }
+            }
+        }
     }
 }
