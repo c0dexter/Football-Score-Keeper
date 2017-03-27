@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
 
     private static Dialog myDialog;
     final BluetoothHC05 myBluetooth = new BluetoothHC05();
+    // Display Mode Command
+    private final String displayModeCommand = "DisplayMode";
     public int additionalTime = 0;
     private int scoreTeamA = 0;
     private int amountOfYellowCardsTeamA = 0;
@@ -49,10 +51,10 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     private TimeCalculator stopWatch;
     // Status of buttons
     private boolean statusOfButtons = false;
+    // *** Arduino Display
     // Buttons
     private Button sendToBoard;
     private Button switchViewOnTheScoreBoard;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
 
         // *** DECLARATION BT DISPLAY BUTTONS SO WE CAN MANIPULATE THEM LATE
         // Buttons for bluetooth options
+
         sendToBoard = (Button) findViewById(R.id.sentToScoreBoardButton);
         switchViewOnTheScoreBoard = (Button) findViewById(R.id.switchViewOnTheScoreBoard);
 
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         View.OnClickListener handlerForSwitchViewOnTheScoreBoardButton = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: add specific method to send a code which will be propagated into Arduino's method
+                myBluetooth.BluetoothSwitcher.run();
             }
         };
         switchViewOnTheScoreBoard.setOnClickListener(handlerForSwitchViewOnTheScoreBoardButton);
@@ -489,9 +492,13 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
 
         // Final String for sending to Arduino
         String finalStringToSent = nameOfTeamA + "|" + scoreAmountOfTeamA + "|" + yellowCardAmountOfTeamA + "|" + redCardAmountOfTeamA + "|" +
-                nameOfTeamB + "|" + scoreAmountOfTeamB + "|" + yellowCardAmountOfTeamB + "|" + redCardAmountOfTeamB;
+                nameOfTeamB + "|" + scoreAmountOfTeamB + "|" + yellowCardAmountOfTeamB + "|" + redCardAmountOfTeamB + "#";
 
         return finalStringToSent;
+    }
+
+    public String changeExternaScoreboardView() {
+        return displayModeCommand;
     }
 
     public class BluetoothHC05 {    // Bluetooth
@@ -538,7 +545,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
 
         });
 
-        Thread BluetoothSender = new Thread(new Runnable() { //TODO: check if method should be executed in new thread
+        Thread BluetoothSender = new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -549,6 +556,33 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                         if (!mmSocket.isConnected()) mmSocket.connect();
 
                         mmSocket.getOutputStream().write(collectData().getBytes(Charset.forName("UTF-8")));
+
+                        //mmSocket.close();
+                    } catch (IOException connectException) {
+                        // Unable to connect; close the socket and return.
+                        try {
+                            mmSocket.close();
+                        } catch (IOException closeException) {
+                            Log.e("ss", "Could not close the client socket !!!", closeException);
+                        }
+                    }
+
+                }
+            }
+        });
+
+        // This method sends special code for switching a view on the external board
+        Thread BluetoothSwitcher = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                if (mmSocket != null) {
+                    try {
+                        // Connect to the remote device through the socket. This call blocks
+                        // until it succeeds or throws an exception.
+                        if (!mmSocket.isConnected()) mmSocket.connect();
+
+                        mmSocket.getOutputStream().write(changeExternaScoreboardView().getBytes(Charset.forName("UTF-8")));
 
                         //mmSocket.close();
                     } catch (IOException connectException) {

@@ -11,7 +11,7 @@ class TimeCalculator extends AsyncTask<Void, String, Void> {
     private StopWatchInterface stopWatchInterface;
     private boolean turnedOn;
     private int currentTime = 0;
-    private int defaultTime = 10000; // unit: [ms]
+    private int defaultTime = 60000; // unit: [ms]
     private int destinationTime = 0;
 
     TimeCalculator(StopWatchInterface swInterface) {
