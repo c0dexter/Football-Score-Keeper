@@ -23,6 +23,10 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements StopWatchInterface, NumberPicker.OnValueChangeListener {
 
+    // FOR YOUR INFORMATION:
+    // TEAM A -> Hosts
+    // TEAM B -> Guests
+
     private static Dialog myDialog;
     final BluetoothHC05 myBluetooth = new BluetoothHC05();
     // Display Mode Command
@@ -35,12 +39,12 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     private int amountOfYellowCardsTeamB = 0;
     private int amountOfRedCardsTeamB = 0;
     private String stopwatchCurrentTime = "00:00";
-    // Team A
+    // Team A (Hosts)
     private TextView teamAScoreTextView;
     private TextView teamAYellowCardTextView;
     private TextView teamARedCardTextView;
     private TextView teamANameTextView;
-    // Team B
+    // Team B (Guests)
     private TextView teamBScoreTextView;
     private TextView teamBYellowCardTextView;
     private TextView teamBRedCardTextView;
@@ -61,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         super.onCreate(savedInstanceState);
 
         myBluetooth.BluetoothThread.run();
-
 
         // *** RECOVERING THE INSTANCE STATE
         if (savedInstanceState != null) {
@@ -95,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         // Stopwatch
         stopwatchTextView = (TextView) findViewById(R.id.stopwatch);
 
-
         // *** DECLARATION BT DISPLAY BUTTONS SO WE CAN MANIPULATE THEM LATE
         // Buttons for bluetooth options
 
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         switchViewOnTheScoreBoard = (Button) findViewById(R.id.switchViewOnTheScoreBoard);
 
         // *** DECLARATION LISTENERS FOR BT BUTTONS
-        // Set listeners for button; SEND
+        // Set listeners for button: SEND
         View.OnClickListener handlerForSendButton = new View.OnClickListener() {
 
             @Override
@@ -114,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         };
         sendToBoard.setOnClickListener(handlerForSendButton);
 
-
         View.OnClickListener handlerForSwitchViewOnTheScoreBoardButton = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
             }
         };
         switchViewOnTheScoreBoard.setOnClickListener(handlerForSwitchViewOnTheScoreBoardButton);
-
 
         // *** Creating a new custom Typeface
         // For digits of counters
@@ -156,13 +156,10 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
 
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
         Log.i("value is", "" + newVal);
-
     }
 
     public void show() {
-
         myDialog = new Dialog(MainActivity.this);
         myDialog.setTitle("NumberPicker");
         myDialog.setContentView(R.layout.dialog);
@@ -212,7 +209,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         }
 
         outState.putBoolean("STATUS_OF_BUTTONS", statusOfButtons);
-
         super.onSaveInstanceState(outState);
     }
 
@@ -253,9 +249,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
             stopWatch.execute();
             stopWatch.setAdditionalTime(additionalTime); // This line adding time to destination time after rotate screen
         }
-
         statusOfButtons = savedInstanceState.getBoolean("STATUS_OF_BUTTONS");
-
     }
 
     /**
@@ -386,7 +380,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         displayRedCardsForTeamB(amountOfRedCardsTeamB);
         displayStopwatchTime(stopwatchCurrentTime);
         enableButtons(statusOfButtons);
-
     }
 
     /**
@@ -539,8 +532,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                     }
                     mmSocket = tmp;
                 }
-
-
             }
 
         });
@@ -597,7 +588,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                 }
             }
         });
-
 
         public void Dispose() {
             if (mmSocket != null) {

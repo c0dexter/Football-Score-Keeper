@@ -6,6 +6,5 @@ package com.example.android.footballscorekeeper;
 
 public interface StopWatchInterface {
     void displayStopwatchTime(String timeToDisplay);
-
     void reportFinish();
 }
