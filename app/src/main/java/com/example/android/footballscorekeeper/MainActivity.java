@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         };
         sendToBoard.setOnClickListener(handlerForSendButton);
 
+        // Set listeners for button: DISPLAY MODE
         View.OnClickListener handlerForSwitchViewOnTheScoreBoardButton = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -507,10 +508,13 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                     // Device does not support Bluetooth
                 }
 
-                Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+                Set<BluetoothDevice> pairedDevices = null;
+                if (mBluetoothAdapter != null) {
+                    pairedDevices = mBluetoothAdapter.getBondedDevices();
+                }
 
 
-                if (pairedDevices.size() > 0) {
+                if (pairedDevices != null && pairedDevices.size() > 0) {
                     // There are paired devices. Get the name and address of each paired device.
                     for (BluetoothDevice device : pairedDevices) {
                         //String deviceName = device.getName();
@@ -589,7 +593,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
             }
         });
 
-        public void Dispose() {
+        void Dispose() {
             if (mmSocket != null) {
                 try {
                     mmSocket.close();
