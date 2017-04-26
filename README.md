@@ -25,6 +25,7 @@ Your design must include:
 **Ad 3.** Each column contains a large TextView to keep track of the current score for that team. Optionally, a second TextView to track another important metric such as fouls can be added.
 
 **Ad 4.** Each column contains multiple buttons. The buttons must track either:
+
  * Each track a different kind of scoring
 
  Or
