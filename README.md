@@ -49,7 +49,9 @@ Your design must include:
 
 ## MEETS SPECIFICATIONS ##
 **Ad 1.** The code runs without errors.
+
 **Ad 2.** Each score button updates the score TextView in its column by adding the correct number of points.
+
 **Ad 3.** The reset button resets the scores on both of the score TextViews.
 
 
