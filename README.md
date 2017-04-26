@@ -74,8 +74,13 @@ Your design must include:
 
 ----
 
-### YouTube video-clip with short presentation ###
-[Javasome Cafe - YouTube video-clip](https://www.youtube.com/watch?v=0VAui2cOu8o)
+### YouTube video-clip with short presentations ###
+
+### Presentation of application ###
+[YouTube video-clip: Application](https://youtu.be/yV69eKoHzVg)
+
+### Presentation of application in action with external display ###
+[YouTube video-clip: Application + External display in action](https://youtu.be/WfG5685hLw0)
 
 ----
 
