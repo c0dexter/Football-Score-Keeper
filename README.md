@@ -86,6 +86,8 @@ Your design must include:
 
 # CODE FOR EXTERNAL DISPLAY (ATMEGA, ARDUINO) #
 
+Code with colored syntax: [Code for external display based on Arduino](http://wklej.org/id/3075917/)
+
 ```
 #!c
 
