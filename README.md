@@ -43,26 +43,28 @@ Ad 7. "The code adheres to all of the following best practices:
 # Functionality #
 
 ## CRITERIA ##
-1. Program compiles and runs on a phone
-2. Content does not appear "cut off"
+1. Errors
+2. Score Button Function
+3. Reset Button Function
 
 ## MEETS SPECIFICATIONS ##
-1. Program must function in Android Studio emulator and on a phone. Upon launching on a phone, the card appears.
-2. Layout scales responsively for screen sizes in portrait mode, with no part of any images only partially visible. Student is not responsible for responsive design in landscape mode.
+Ad 1. The code runs without errors.
+Ad 2. Each score button updates the score TextView in its column by adding the correct number of points.
+Ad 3. The reset button resets the scores on both of the score TextViews.
+
 
 ----
 
-# Code Review #
+# Code Readability #
 
 ## CRITERIA ##
-1. At least one View Group is included
-2. View Groups contain at least one image view and at least one text view
-3. Elements and Text on screen are in appropriate units
+1. Naming conventions
+2. Code style
 
 ## MEETS SPECIFICATIONS ##
-1. XML must include a Relative Layout and/or a Linear Layout
-2. Must have one or more image views or text views.
-3. Elements are specified in dp, text is specified in sp.
+Ad 1. Any classes are named after the object they represent.All variables are named by their intended contents. All methods are named by their intended effect or in the style required by a callback interface.
+
+Ad 2. here are no unnecessary blank lines.One variable is declared per declaration line. The code within a method is indented with respect to the method declaration line.
 
 ----
 
