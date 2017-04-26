@@ -84,6 +84,226 @@ Your design must include:
 
 ----
 
+# CODE FOR EXTERNAL DISPLAY (ATMEGA, ARDUINO) #
+
+```
+#!c
+
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+String readString;
+byte index = 0;     // Index into array; where to store the character
+bool headerDisplayed = false;
+
+
+// Team A (HOSTS) Strings declaration
+String teamAName, teamAScore, teamAYellowCard, teamARedCard;
+
+// Team B (GUESTS) Strings declaration
+String teamBName, teamBScore, teamBYellowCard, teamBRedCard;
+
+
+// Variant of display mode
+int displayMode = 0;
+
+// A method for updating Strings
+void updateStringsValues() {
+  teamAName = getValue(readString, '|', 0);
+  teamAScore = getValue(readString, '|', 1);
+  teamAYellowCard = getValue(readString, '|', 2);
+  teamARedCard = getValue(readString, '|', 3);
+  
+  teamBName = getValue(readString, '|', 4);
+  teamBScore = getValue(readString, '|', 5);
+  teamBYellowCard = getValue(readString, '|', 6);
+  teamBRedCard = getValue(readString, '|', 7);
+  
+  Serial.println("Updating data");
+}
+
+
+// LCD view - for displaying scores
+void displayScores(){
+  
+  if(headerDisplayed == false){
+    lcd.setCursor(0,0);
+  lcd.print("** GOALS VIEW **");
+  delay(1500);
+  headerDisplayed = true;
+  lcd.clear();
+  }
+  
+  lcd.setCursor(1, 0);
+  lcd.print(teamAName);
+  lcd.setCursor(9, 0);
+  lcd.print(teamBName);
+  lcd.setCursor(3, 1);
+  lcd.print(teamAScore);
+  if(teamAName != ""){
+    lcd.setCursor(7, 1);
+    lcd.print("-");
+  }
+  lcd.setCursor(11, 1);
+  lcd.print(teamBScore);
+}
+
+// LCD view - for displaying statistic of HOSTS TEAM
+void displayHostsStats(){
+  if(headerDisplayed == false){
+    lcd.setCursor(0,0);
+  lcd.print("** HOSTS VIEW **");
+  delay(1500);
+  headerDisplayed = true;
+  lcd.clear();
+  }
+  lcd.setCursor(0, 0);
+  lcd.print("* " + teamAName + " stats *");
+  lcd.setCursor(0, 1);
+  lcd.print("G: " + teamAScore + "  " + ("Y: "+(teamAYellowCard + ("  R: " +  teamARedCard))));
+}
+
+// LCD view - for displaying statistic of GUESTS TEAM
+void displayGuestsStats(){
+  if(headerDisplayed == false){
+    lcd.setCursor(0,0);
+  lcd.print("* GUESTS VIEW *");
+  delay(1500);
+  headerDisplayed = true;
+  lcd.clear();
+  }
+  lcd.setCursor(0, 0);
+  lcd.print("* " + teamBName + " stats *");
+  lcd.setCursor(0, 1);
+  lcd.print("G: " + teamBScore + "  " + ("Y: "+(teamBYellowCard + ("  R: " +  teamBRedCard))));
+}
+
+// LCD view - for displaying mixed views one by one
+void displayDynamicStats(){
+  if(headerDisplayed == false){
+    lcd.setCursor(0,0);
+  lcd.print("* DYNAMIC VIEW *");
+  delay(1500);
+  headerDisplayed = true;
+  lcd.clear();
+  }
+  lcd.clear();
+  displayScores();
+  delay(2000);
+  lcd.clear();
+  displayHostsStats();
+  delay(2000);
+  lcd.clear();
+  displayGuestsStats();
+  delay(2000);
+  lcd.clear(); 
+}
+
+// Method for dividing String by using separator and putting it into String Array
+String getValue(String data, char separator, int index) {
+  int found = 0;
+  int strIndex[] = {0, -1};
+  int maxIndex = data.length() - 1;
+
+  for (int i = 0; i <= maxIndex && found <= index; i++) {
+    if (data.charAt(i) == separator || i == maxIndex) {
+      found++;
+      strIndex[0] = strIndex[1] + 1;
+      strIndex[1] = (i == maxIndex) ? i + 1 : i;
+    }
+  }
+  return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+}
+
+
+// Setup - setup display
+void setup() {
+  lcd.init(); // initialize the lcd
+  lcd.backlight();
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+  lcd.setCursor(1, 0);
+  lcd.print("UDACITY Course");
+    delay(1500);
+  for(int i=0; i<16; i++) {
+    lcd.scrollDisplayLeft();
+    delay(200);
+  }
+  lcd.setCursor(0, 1);
+  lcd.print("Score Keeper App!");
+  delay(300);
+  for(int i=0; i<16; i++) {
+    lcd.scrollDisplayRight();
+    delay(200);
+  }
+  delay(2000);
+
+  for(int i=0; i<16; i++) {
+    lcd.scrollDisplayRight();
+    delay(200);
+  }
+  lcd.clear();
+  while (Serial.available() > 0) {
+    Serial.read();
+  }
+}
+
+// This is MAIN
+void loop() {
+
+// Reading data from Android
+  if (Serial.available()) {
+    delay(100);
+    readString = "";
+    while (Serial.available()) {
+      delay(5);  //small delay to allow input buffer to fill
+      char c = Serial.read();  //gets one byte from serial buffer
+      if (c == '#' || c == '\0') {
+          Serial.println("Sign # - Stop");
+        break;
+      }  //breaks out of capture loop to print readstring
+      readString += c;
+    }
+    // Checking if user clicked on Arduino app a DISPLAY MODE button
+    if(readString == "DisplayMode"){
+      // increment variable for display mode
+      displayMode++;
+      lcd.clear();
+      headerDisplayed = false;
+      if(displayMode>3){
+      displayMode=0;
+      readString="";
+      lcd.clear();
+      }
+      Serial.println("Received command for change view");
+      readString="";
+    }else{
+    updateStringsValues();
+    }
+  } 
+
+// Board views switching
+switch (displayMode) {
+    case 0:
+      displayScores();
+      break;
+    case 1:
+      displayHostsStats();
+      break;
+    case 2:
+      displayGuestsStats();
+      break;
+    case 3:
+      displayDynamicStats();
+      break;
+    default: 
+      displayScores();
+    break;
+  }
+}
+```
+
+
+
 ### Screenshots ###
 ![1.png](https://bitbucket.org/repo/6xK9go/images/3126521370-1.png)
 
