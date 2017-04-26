@@ -22,21 +22,21 @@ Your design must include:
  
 **Ad 2.** App is divided into two columns, one for each team.
  
-**Ad 3.** Each column contains a large TextView to keep track of the current score for that team.
+**Ad 3.** Each column contains a large TextView to keep track of the current score for that team. Optionally, a second TextView to track another important metric such as fouls can be added.
 
-**Ad 4.** Optionally, a second TextView to track another important metric such as fouls can be added.
-
-**Ad 5.** Each column contains multiple buttons. The buttons must track either:
+**Ad 4.** Each column contains multiple buttons. The buttons must track either:
  * Each track a different kind of scoring
+
  Or
+
  * Each track a different metric (one score, the other fouls, for instance).
 
-**Ad 6.** The layout contains a ‘reset’ button.
+**Ad 5.** The layout contains a ‘reset’ button.
 
-**Ad 7.** "The code adheres to all of the following best practices:
+**Ad 7.** The code adheres to all of the following best practices:
 * Text sizes are defined in sp
 * Lengths are defined in dp
-* Padding and margin is used appropriately, such that the views are not crammed up against each other."
+* Padding and margin is used appropriately, such that the views are not crammed up against each other.
 
 ----
 
