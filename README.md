@@ -74,7 +74,7 @@ Your design must include:
 
 ----
 
-### YouTube video-clip with short presentations ###
+# YouTube video-clips with short presentations #
 
 ### Presentation of application ###
 [YouTube video-clip: Application](https://youtu.be/yV69eKoHzVg)
