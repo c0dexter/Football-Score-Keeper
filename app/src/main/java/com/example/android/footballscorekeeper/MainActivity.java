@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -29,8 +31,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
 
     private static Dialog myDialog;
     final BluetoothHC05 myBluetooth = new BluetoothHC05();
-    // Display Mode Command
-    private final String displayModeCommand = "DisplayMode";
     public int additionalTime = 0;
     private int scoreTeamA = 0;
     private int amountOfYellowCardsTeamA = 0;
@@ -55,10 +55,6 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     private TimeCalculator stopWatch;
     // Status of buttons
     private boolean statusOfButtons = false;
-    // *** Arduino Display
-    // Buttons
-    private Button sendToBoard;
-    private Button switchViewOnTheScoreBoard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         // *** DECLARATION BT DISPLAY BUTTONS SO WE CAN MANIPULATE THEM LATE
         // Buttons for bluetooth options
 
-        sendToBoard = (Button) findViewById(R.id.sentToScoreBoardButton);
-        switchViewOnTheScoreBoard = (Button) findViewById(R.id.switchViewOnTheScoreBoard);
+        Button sendToBoard = (Button) findViewById(R.id.sentToScoreBoardButton);
+        Button switchViewOnTheScoreBoard = (Button) findViewById(R.id.switchViewOnTheScoreBoard);
 
         // *** DECLARATION LISTENERS FOR BT BUTTONS
         // Set listeners for button: SEND
@@ -162,13 +158,13 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
 
     public void show() {
         myDialog = new Dialog(MainActivity.this);
-        myDialog.setTitle("NumberPicker");
+        myDialog.setTitle(R.string.title_of_additional_time_picker);
         myDialog.setContentView(R.layout.dialog);
-        Button buttonSet = (Button) myDialog.findViewById(R.id.button1); //TODO: Change button's IDs, should be more specific
-        Button buttonCancel = (Button) myDialog.findViewById(R.id.button2);
+        Button buttonSet = (Button) myDialog.findViewById(R.id.setButton);
+        Button buttonCancel = (Button) myDialog.findViewById(R.id.cancelButton);
         final NumberPicker np = (NumberPicker) myDialog.findViewById(R.id.numberPicker1);
-        np.setMaxValue(30); // max value 30
-        np.setMinValue(0);   // min value 0
+        np.setMaxValue(30);     // max value 30
+        np.setMinValue(0);      // min value 0
         np.setWrapSelectorWheel(false);
         np.setOnValueChangedListener(this);
         buttonSet.setOnClickListener(new View.OnClickListener() {
@@ -177,6 +173,12 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                 additionalTime = (Integer.parseInt(String.valueOf(np.getValue()))); // Get value from picker
                 stopWatch.setAdditionalTime(additionalTime);                        // Set additional time
                 myDialog.dismiss();
+                Context context = getApplicationContext();
+                CharSequence text = "You have added " + additionalTime + " min";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
         });
         buttonCancel.setOnClickListener(new View.OnClickListener() {
@@ -244,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         // Stopwatch
         stopwatchTextView.setText(String.valueOf(savedInstanceState.getString("STOPWATCH_TIMER")));
         additionalTime = savedInstanceState.getInt("ADDITIONAL_TIME");
+
         if (savedInstanceState.getBoolean("STOPWATCH_STARTED")) {
             isRunning = true;
             stopWatch = new TimeCalculator(this, savedInstanceState.getLong("STOPWATCH_START_TIME"));
@@ -256,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     /**
      * Displays the given score for Team A.
      *
-     * @param score
+     * @param score - amount of achieved goals
      */
     public void displayForTeamA(int score) {
         TextView scoreView = (TextView) findViewById(R.id.team_a_score);
@@ -308,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     /**
      * Displays the given score for Team B.
      *
-     * @param score
+     * @param score - amount of achieved goals
      */
     public void displayForTeamB(int score) {
         TextView scoreView = (TextView) findViewById(R.id.team_b_score);
@@ -368,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         amountOfRedCardsTeamA = 0;
         amountOfYellowCardsTeamB = 0;
         amountOfRedCardsTeamB = 0;
-        stopwatchCurrentTime = "00:00";
+        stopwatchCurrentTime = getString(R.string.default_time_value);
         statusOfButtons = false;
         additionalTime = 0;
 
@@ -386,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
     /**
      * Displays stopwatch.
      *
-     * @param stopwatchCurrentTime
+     * @param stopwatchCurrentTime - current time in [ms] unit
      */
     public void displayStopwatchTime(String stopwatchCurrentTime) {
         TextView stopwatchTextView = (TextView) findViewById((R.id.stopwatch));
@@ -402,6 +405,9 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         enableButtons(statusOfButtons);
     }
 
+    /**
+     * Start stopwatch
+     */
     public void startStopwatch() {
         if (!isRunning) {
             isRunning = true;
@@ -410,10 +416,16 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         }
     }
 
+    /**
+     * After end of time set flat isRunning to false
+     */
     public void reportFinish() {
         isRunning = false;
     }
 
+    /**
+     * After clicking PLAY button, make buttons active
+     */
     public void enableButtons(boolean status) {
         // *** BUTTONS MAPPING
         // Top Buttons
@@ -470,6 +482,9 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         }
     }
 
+    /**
+     * Collects all data and makes concatenated String with delimiter for sending to Arduino
+     */
     public String collectData() {
 
         // Team A
@@ -485,17 +500,18 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
         String redCardAmountOfTeamB = teamBRedCardTextView.getText().toString();
 
         // Final String for sending to Arduino
-        String finalStringToSent = nameOfTeamA + "|" + scoreAmountOfTeamA + "|" + yellowCardAmountOfTeamA + "|" + redCardAmountOfTeamA + "|" +
+        return nameOfTeamA + "|" + scoreAmountOfTeamA + "|" + yellowCardAmountOfTeamA + "|" + redCardAmountOfTeamA + "|" +
                 nameOfTeamB + "|" + scoreAmountOfTeamB + "|" + yellowCardAmountOfTeamB + "|" + redCardAmountOfTeamB + "#";
-
-        return finalStringToSent;
     }
 
-    public String changeExternaScoreboardView() {
-        return displayModeCommand;
+    /**
+     * Returns specific String as command which is interpreted by Arduino as command for changing display mode
+     */
+    public String changeExternalScoreboardView() {
+        return "DisplayMode";
     }
 
-    public class BluetoothHC05 {    // Bluetooth
+    private class BluetoothHC05 {    // Bluetooth
         private BluetoothDevice myDevice = null;
         private BluetoothSocket mmSocket = null;
 
@@ -506,6 +522,13 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                 BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                 if (mBluetoothAdapter == null) {
                     // Device does not support Bluetooth
+                    Context context = getApplicationContext();
+                    CharSequence text = "Device does not support Bluetooth!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
                 }
 
                 Set<BluetoothDevice> pairedDevices = null;
@@ -513,12 +536,9 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                     pairedDevices = mBluetoothAdapter.getBondedDevices();
                 }
 
-
                 if (pairedDevices != null && pairedDevices.size() > 0) {
                     // There are paired devices. Get the name and address of each paired device.
                     for (BluetoothDevice device : pairedDevices) {
-                        //String deviceName = device.getName();
-                        //String deviceHardwareAddress = device.getAddress(); // MAC address
 
                         if (device.getName().contains("HC-05")) myDevice = device;
                     }
@@ -531,8 +551,11 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                         // Get a BluetoothSocket to connect with the given BluetoothDevice.
                         // MY_UUID is the app's UUID string, also used in the server code.
                         tmp = myDevice.createInsecureRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+
+
                     } catch (IOException e) {
                         Log.e("Device", "Socket's create() method failed", e);
+
                     }
                     mmSocket = tmp;
                 }
@@ -566,7 +589,9 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
             }
         });
 
-        // This method sends special code for switching a view on the external board
+        /**
+         * This method sends special code for switching a view on the external board
+         */
         Thread BluetoothSwitcher = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -577,7 +602,7 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
                         // until it succeeds or throws an exception.
                         if (!mmSocket.isConnected()) mmSocket.connect();
 
-                        mmSocket.getOutputStream().write(changeExternaScoreboardView().getBytes(Charset.forName("UTF-8")));
+                        mmSocket.getOutputStream().write(changeExternalScoreboardView().getBytes(Charset.forName("UTF-8")));
 
                         //mmSocket.close();
                     } catch (IOException connectException) {
@@ -593,6 +618,9 @@ public class MainActivity extends AppCompatActivity implements StopWatchInterfac
             }
         });
 
+        /**
+         * Close socket on Dispose
+         */
         void Dispose() {
             if (mmSocket != null) {
                 try {

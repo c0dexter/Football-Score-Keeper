@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FootballScoreKeeper.iml" filepath="$PROJECT_DIR$/FootballScoreKeeper.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/football-score-keeper.iml" filepath="$PROJECT_DIR$/football-score-keeper.iml" />
     </modules>
   </component>
 </project>
