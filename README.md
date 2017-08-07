@@ -17,12 +17,6 @@
 
 ----
 
-# CODE FOR EXTERNAL DISPLAY (ATMEGA, ARDUINO) #
-
-Code with colored syntax: [Code for external display based on Arduino](http://wklej.org/id/3075917/)
-
-----
-
 # Layout #
 
 ## CRITERIA ##
@@ -90,7 +84,11 @@ Your design must include:
 
 **Ad 2.** here are no unnecessary blank lines.One variable is declared per declaration line. The code within a method is indented with respect to the method declaration line.
 
+----
 
+# CODE FOR EXTERNAL DISPLAY (ATMEGA, ARDUINO) #
+
+Code with colored syntax: [Code for external display based on Arduino](http://wklej.org/id/3075917/)
 
 ```
 #!c
