@@ -3,6 +3,24 @@
 **PROJECT SPECIFICATION**
 *Score Keeper*
 
+[![N|Solid](http://i.imgur.com/LgahjBMm.png)](http://i.imgur.com/LgahjBMm.png) [![N|Solid](http://i.imgur.com/PXnL0Rpm.png)](http://i.imgur.com/PXnL0Rpm.png) [![N|Solid](http://i.imgur.com/cxpwKbDm.png)](http://i.imgur.com/cxpwKbDm.png) [![N|Solid](http://i.imgur.com/GRKmLexm.jpg)](http://i.imgur.com/GRKmLexm.jpg) [![N|Solid](http://i.imgur.com/AKDdpyLm.jpg)](http://i.imgur.com/AKDdpyLm.jpg) 
+
+----
+
+# YouTube video-clips with short presentations #
+
+### Presentation of application ###
+[![Watch the video](http://i.imgur.com/fSHcGGPm.png)](https://youtu.be/yV69eKoHzVg)
+
+### Presentation of application in action with external display ###
+[![Watch the video](http://i.imgur.com/nfBaGIpm.png)](https://youtu.be/WfG5685hLw0)
+
+----
+
+# CODE FOR EXTERNAL DISPLAY (ATMEGA, ARDUINO) #
+
+Code with colored syntax: [Code for external display based on Arduino](http://wklej.org/id/3075917/)
+
 ----
 
 # Layout #
@@ -72,21 +90,7 @@ Your design must include:
 
 **Ad 2.** here are no unnecessary blank lines.One variable is declared per declaration line. The code within a method is indented with respect to the method declaration line.
 
-----
 
-# YouTube video-clips with short presentations #
-
-### Presentation of application ###
-[YouTube video-clip: Application](https://youtu.be/yV69eKoHzVg)
-
-### Presentation of application in action with external display ###
-[YouTube video-clip: Application + External display in action](https://youtu.be/WfG5685hLw0)
-
-----
-
-# CODE FOR EXTERNAL DISPLAY (ATMEGA, ARDUINO) #
-
-Code with colored syntax: [Code for external display based on Arduino](http://wklej.org/id/3075917/)
 
 ```
 #!c
