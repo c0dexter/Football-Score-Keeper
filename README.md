@@ -1,4 +1,5 @@
-# Score Keeper [UDACITY ANDROID COURSE]#
+# Score Keeper App + Arduino External LCD with Bluetooth connection
+# UDACITY ANDROID COURSE
 
 **PROJECT SPECIFICATION**
 *Score Keeper*
