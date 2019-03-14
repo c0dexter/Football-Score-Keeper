@@ -1,4 +1,4 @@
-# Score Keeper App + Arduino External LCD with Bluetooth connection (UDACITY COURSE)
+# Score Keeper App (UDACITY COURSE) + private project of Arduino External LCD with the Bluetooth connection to displaying points
 
 [![N|Solid](http://i.imgur.com/LgahjBMm.png)](http://i.imgur.com/LgahjBMm.png) [![N|Solid](http://i.imgur.com/PXnL0Rpm.png)](http://i.imgur.com/PXnL0Rpm.png) [![N|Solid](http://i.imgur.com/cxpwKbDm.png)](http://i.imgur.com/cxpwKbDm.png) [![N|Solid](http://i.imgur.com/GRKmLexm.jpg)](http://i.imgur.com/GRKmLexm.jpg)
 
